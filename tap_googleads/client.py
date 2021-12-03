@@ -32,7 +32,7 @@ class GoogleAdsStream(RESTStream):
 
     @property
     @cached
-    def authenticator(self) -> GoogleAdsAuthenticator:       
+    def authenticator(self) -> GoogleAdsAuthenticator:
         """Return a new authenticator object."""
         base_auth_url = "https://www.googleapis.com/oauth2/v4/token"
         #Silly way to do parameters but it works
