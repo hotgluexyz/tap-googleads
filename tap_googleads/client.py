@@ -2,8 +2,8 @@
 
 import requests
 from pathlib import Path
-from typing import Any, Dict, Optional, Union, List, Iterable
-
+from typing import Any, Dict, Optional, Union, List, Iterable, Mapping
+from types import MappingProxyType
 from memoization import cached
 
 from singer_sdk.helpers.jsonpath import extract_jsonpath
@@ -25,8 +25,14 @@ class GoogleAdsStream(RESTStream):
     _LOG_REQUEST_METRIC_URLS: bool = True 
 
     @property
+    def config(self) -> Mapping[str, Any]:
+        self._config["customer_id"] = "".join(c for c in self._config["customer_id"] if c.isdigit())
+        self._config["login_customer_id"] = "".join(c for c in self._config["login_customer_id"] if c.isdigit())
+        return MappingProxyType(self._config)
+
+    @property
     @cached
-    def authenticator(self) -> GoogleAdsAuthenticator:
+    def authenticator(self) -> GoogleAdsAuthenticator:       
         """Return a new authenticator object."""
         base_auth_url = "https://www.googleapis.com/oauth2/v4/token"
         #Silly way to do parameters but it works
