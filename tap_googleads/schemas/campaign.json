@@ -13,6 +13,9 @@
                 "name": {
                     "type": "string"
                 },
+                "id": {
+                    "type": "string"
+                },
                 "campaign_budget": {
                     "type": "string"
                 },
