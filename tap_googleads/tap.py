@@ -18,7 +18,8 @@ from tap_googleads.streams import (
     CampaignPerformanceByLocation,
     GeotargetsStream,
     BillingSetupStream,
-    InvoiceStream
+    InvoiceStream,
+    CampaignBudget
 )
 
 STREAM_TYPES = [
@@ -34,7 +35,8 @@ STREAM_TYPES = [
     CampaignPerformanceByLocation,
     GeotargetsStream,
     BillingSetupStream,
-    InvoiceStream
+    InvoiceStream,
+    CampaignBudget
 ]
 
 

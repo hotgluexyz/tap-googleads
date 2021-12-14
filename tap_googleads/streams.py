@@ -271,7 +271,7 @@ class CampaignsStream(ReportsStream):
     @property
     def gaql(self):
         return """
-        SELECT campaign.id, campaign.name FROM campaign ORDER BY campaign.id
+        SELECT campaign.id, campaign.name, campaign.campaign_budget FROM campaign ORDER BY campaign.id
         """
     records_jsonpath = "$.results[*]"
     name = "campaign"
@@ -381,4 +381,17 @@ class CampaignPerformanceByLocation(ReportsStream):
     primary_keys = ["id"]
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "campaign_performance_by_location.json"
+
+
+class CampaignBudget(ReportsStream):
+    """Campaign Budget"""
+
+    gaql = """
+    SELECT campaign_budget.name, campaign_budget.id, campaign_budget.period, campaign_budget.amount_micros FROM campaign_budget
+    """
+    records_jsonpath = "$.results[*].campaignBudget"
+    name = "campaign_budget"
+    primary_keys = ["id"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "campaign_budget.json"
 

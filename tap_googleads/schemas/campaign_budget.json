@@ -1,0 +1,20 @@
+{
+    "type": "object",
+    "properties": {
+        "resourceName": {
+            "type": "string"
+        },
+        "period": {
+            "type": "string"
+        },
+        "id": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        },
+        "amountMicros": {
+            "type": "string"
+        }
+    }
+}
