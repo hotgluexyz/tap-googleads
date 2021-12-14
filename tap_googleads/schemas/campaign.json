@@ -15,6 +15,15 @@
                 },
                 "id": {
                     "type": "string"
+                },
+                "campaign_budget": {
+                    "type": "string"
+                },
+                "accessible_bidding_strategy": {
+                    "type": "string"
+                },
+                "bidding_strategy": {
+                    "type": "string"
                 }
             }
         }

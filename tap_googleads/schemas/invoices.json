@@ -1,0 +1,67 @@
+{
+    "type": "object",
+    "properties": {
+        "invoices": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "billingSetup": {
+                    "type": "string"
+                },
+                "paymentsAccountId": {
+                    "type": "string"
+                },
+                "paymentsProfileId": {
+                    "type": "string"
+                },
+                "issueDate": {
+                    "type": "string"
+                },
+                "dueDate": {
+                    "type": "string"
+                },
+                "currencyCode": {
+                    "type": "string"
+                },
+                "subtotalAmountMicros": {
+                    "type": "string"
+                },
+                "taxAmountMicros": {
+                    "type": "string"
+                },
+                "totalAmountMicros": {
+                    "type": "string"
+                },
+                "correctedInvoice": {
+                    "type": "string"
+                },
+                "pdfUrl": {
+                    "type": "string"
+                },
+                "resourceName": {
+                    "type": "string"
+                },
+                "adjustmentsSubtotalAmountMicros": {
+                    "type": "string"
+                },
+                "adjustmentsTaxAmountMicros": {
+                    "type": "string"
+                },
+                "adjustmentsTotalAmountMicros": {
+                    "type": "string"
+                },
+                "regulatoryCostsSubtotalAmountMicros": {
+                    "type": "string"
+                },
+                "regulatoryCostsTaxAmountMicros": {
+                    "type": "string"
+                },
+                "regulatoryCostsTotalAmountMicros": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

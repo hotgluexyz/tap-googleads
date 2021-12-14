@@ -1,6 +1,8 @@
 """Stream type classes for tap-googleads."""
 
 from pathlib import Path
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 from typing import Any, Dict, Optional, Union, List, Iterable
 
 from singer_sdk import typing as th  # JSON Schema typing helpers
@@ -40,6 +42,102 @@ class AccessibleCustomers(GoogleAdsStream):
     def get_child_context(self, record: dict, context: Optional[dict]) -> dict:
         """Return a context dictionary for child streams."""
         return { "resourceNames":record["resourceNames"] }
+
+class BillingSetupStream(GoogleAdsStream):
+    #TODO add a seperate stream to get the Customer information and return i
+    rest_method = "POST"
+    @property
+    def path(self):
+        #Paramas
+        path = "/customers/"
+        path = path + self.config["customer_id"]
+        path = path + "/googleAds:search"
+        path = path + "?pageSize=10000"
+        path = path + f"&query={self.gaql}"
+        return path
+    
+    @property
+    def gaql(self):
+        return """SELECT billing_setup.id FROM billing_setup"""
+    records_jsonpath = "$.results[*]"
+    name = "billingSetup_stream"
+    primary_keys = ["billing_setup.id"]
+    replication_key = None
+
+    schema = th.PropertiesList(
+            th.Property("BillingSetup",th.ObjectType(
+                th.Property("id", th.StringType),
+            ))
+            ).to_dict()
+    
+    def get_child_context(self, record: dict, context: Optional[dict]) -> dict:
+        """Return a context dictionary for child streams."""
+        return { "billing_setup_id":record["billingSetup"]["id"] }
+
+
+class InvoiceStream(GoogleAdsStream):
+    rest_method = "GET"
+    parent_stream_type = BillingSetupStream
+
+    records_jsonpath = "$.results[*]"
+    name = "invoices"
+    primary_keys = ["id"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "invoices.json"
+
+
+    def get_records(self, context: Optional[dict]) -> Iterable[Dict[str, Any]]:
+        # for date in self.invoice_dates:
+        date = self.config["start_date"]
+        date = datetime.strptime(date, "%Y-%m-%dT%H:%M:%SZ")
+        if date.year<2019:
+            date = datetime(2019,1,1)
+
+        MONTHS_MAP = {
+            1: "JANUARY",
+            2: "FEBRUARY",
+            3: "MARCH",
+            4: "APRIL",
+            5: "MAY",
+            6: "JUNE",
+            7: "JULY",
+            8: "AUGUST",
+            9: "SEPTEMBER",
+            10: "OCTOBER",
+            11: "NOVEMBER",
+            12: "DECEMBER"
+        }
+
+        while date<datetime.now():
+            context.update({
+                'issueYear': date.year,
+                'issueMonth': MONTHS_MAP[date.month]
+            })
+            date = date + relativedelta(months=1)
+            for record in self.request_records(context):
+                transformed_record = self.post_process(record, context)
+                if transformed_record is None:
+                    # Record filtered out during post_process()
+                    continue
+                yield transformed_record
+
+    def get_url_params(
+        self, context: Optional[dict], next_page_token: Optional[Any]
+    ) -> Dict[str, Any]:
+        params = dict(
+            billingSetup = f"customers/{self.config['customer_id']}/billingSetups/{context['billing_setup_id']}",
+            issueYear = context["issueYear"],
+            issueMonth = context["issueMonth"]
+        )
+        return params
+
+    @property
+    def path(self):
+        #Paramas
+        path = "/customers/"
+        path = path + self.config['customer_id']
+        path = path + "/invoices"
+        return path
 
 class CustomerHierarchyStream(GoogleAdsStream):
     """
@@ -173,7 +271,7 @@ class CampaignsStream(ReportsStream):
     @property
     def gaql(self):
         return """
-        SELECT campaign.id, campaign.name FROM campaign ORDER BY campaign.id
+        SELECT campaign.id, campaign.name, campaign.campaign_budget FROM campaign ORDER BY campaign.id
         """
     records_jsonpath = "$.results[*]"
     name = "campaign"
@@ -283,4 +381,17 @@ class CampaignPerformanceByLocation(ReportsStream):
     primary_keys = ["id"]
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "campaign_performance_by_location.json"
+
+
+class CampaignBudget(ReportsStream):
+    """Campaign Budget"""
+
+    gaql = """
+    SELECT campaign_budget.name, campaign_budget.id, campaign_budget.period, campaign_budget.amount_micros FROM campaign_budget
+    """
+    records_jsonpath = "$.results[*].campaignBudget"
+    name = "campaign_budget"
+    primary_keys = ["id"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "campaign_budget.json"
 
