@@ -31,3 +31,5 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.scripts]
 # CLI declaration
 tap-googleads = 'tap_googleads.tap:TapGoogleAds.cli'
+tap-adwords = 'tap_googleads.tap:TapGoogleAds.cli'
+
