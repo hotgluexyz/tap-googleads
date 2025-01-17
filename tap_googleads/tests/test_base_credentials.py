@@ -15,11 +15,9 @@ class TestTapGoogleadsWithBaseCredentials(unittest.TestCase):
 
     def setUp(self):
         self.mock_config = {
-            "oauth_credentials": {
-                "client_id": "1234",
-                "client_secret": "1234",
-                "refresh_token": "1234",
-            },
+            "client_id": "1234",
+            "client_secret": "1234",
+            "refresh_token": "1234",
             "customer_id": "1234567890",
             "developer_token": "1234",
         }
