@@ -1,7 +1,7 @@
 """REST client handling, including GoogleAdsStream base class."""
 
 from datetime import datetime
-from functools import cached_property
+from backports.cached_property import cached_property
 from typing import Any, Dict, Optional
 
 import requests
