@@ -36,7 +36,7 @@ STREAM_TYPES = [
     GeoPerformance,
 ]
 
-CUSTOMER_ID_TYPE = th.StringType(pattern=r"^[0-9]{3}-?[0-9]{3}-?[0-9]{4}$")
+CUSTOMER_ID_TYPE = th.StringType()
 
 
 class TapGoogleAds(Tap):
