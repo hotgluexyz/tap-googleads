@@ -41,9 +41,9 @@ https://developers.google.com/google-ads/api/docs/first-call/dev-token
 
 Required settings:
 
-- `oauth_credentials.client_id`
-- `oauth_credentials.client_secret`
-- `oauth_credentials.refresh_token`
+- `client_id`
+- `client_secret`
+- `refresh_token`
 - `developer_token`
 
 Optional settings:
@@ -81,13 +81,13 @@ These are not intended for a user to set manually, as such setting them could ca
 
 Also set in by default in your [Matatika](https://www.matatika.com/) workspace environment:
 
-- `oauth_credentials.client_id`
-- `oauth_credentials_client_secret`
-- `oauth_credentials.authorization_url`
-- `oauth_credentials.scope`
-- `oauth_credentials.access_token`
-- `oauth_credentials.refresh_token`
-- `oauth_credentials.refresh_proxy_url`
+- `client_id`
+- `client_secret`
+- `authorization_url`
+- `scope`
+- `access_token`
+- `refresh_token`
+- `refresh_proxy_url`
 
 
 ### Source Authentication and Authorization

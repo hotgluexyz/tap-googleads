@@ -14,17 +14,17 @@ plugins:
     - catalog
     - discover
     settings:
-    - name: oauth_credentials.refresh_token
+    - name: refresh_token
       kind: string
       sensitive: true
-    - name: oauth_credentials.client_id
-    - name: oauth_credentials.client_secret
+    - name: client_id
+    - name: client_secret
       kind: string
       sensitive: true
-    - name: oauth_credentials.refresh_proxy_url
+    - name: refresh_proxy_url
       kind: string
       hidden: true
-    - name: oauth_credentials.refresh_proxy_url_auth
+    - name: refresh_proxy_url_auth
       kind: string
       hidden: true
     - name: developer_token
