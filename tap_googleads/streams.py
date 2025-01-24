@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Any, Dict, Iterable
 
 from singer_sdk import typing as th  # JSON Schema typing helpers
 
-from tap_googleads.client import GoogleAdsStream, ResumableAPIError
+from tap_googleads.client import GoogleAdsStream, ResumableAPIError, _sanitise_customer_id
 
 if TYPE_CHECKING:
     from singer_sdk.helpers.types import Context, Record
@@ -29,11 +29,11 @@ class AccessibleCustomers(GoogleAdsStream):
         th.Property("resourceNames", th.ArrayType(th.StringType)),
     ).to_dict()
 
-    def generate_child_contexts(
+    def get_child_context(
         self,
         record: Record,
         context: Context | None,
-    ) -> Iterable[Context | None]:
+    ) -> Context | None:
         """Generate child contexts.
 
         Args:
@@ -44,9 +44,11 @@ class AccessibleCustomers(GoogleAdsStream):
             A child context for each child stream.
 
         """
+        customer_ids = []
         for customer in record.get("resourceNames", []):
             customer_id = customer.split("/")[1]
-            yield {"customer_id": customer_id}
+            customer_ids.append(customer_id.replace("-", ""))
+        return {"customer_ids": customer_ids}
 
 
 class CustomerHierarchyStream(GoogleAdsStream):
@@ -81,6 +83,7 @@ class CustomerHierarchyStream(GoogleAdsStream):
     primary_keys = ["customerClient__id"]
     replication_key = None
     parent_stream_type = AccessibleCustomers
+    state_partitioning_keys = ["customer_id"]
     schema = th.PropertiesList(
         th.Property("customer_id", th.StringType),
         th.Property(
@@ -136,6 +139,18 @@ class CustomerHierarchyStream(GoogleAdsStream):
 
         self.seen_customer_ids.update(customer_ids)
 
+    def get_records(self, context):
+        for customer_id in context.get("customer_ids", []):
+            try:
+                context["customer_id"] = customer_id
+                yield from super().get_records(context)
+            except Exception as e:
+                self.logger.error(f"Error processing resource name {name}: {str(e)}")
+                continue
+
+    def post_process(self, row, context):
+        row["customer_id"] = _sanitise_customer_id(row["customerClient"]["id"])
+        return row
 
 class ReportsStream(GoogleAdsStream):
     parent_stream_type = CustomerHierarchyStream
