@@ -26,6 +26,10 @@ class GoogleAdsStream(RESTStream):
     next_page_token_jsonpath = "$.nextPageToken"  # Or override `get_next_page_token`.
     _LOG_REQUEST_METRIC_URLS: bool = True
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._config["customer_id"] = _sanitise_customer_id(self.config.get("customer_id"))
+
     def response_error_message(self, response: requests.Response) -> str:
         """Build error message for invalid http statuses.
 
@@ -141,7 +145,10 @@ class GoogleAdsStream(RESTStream):
 
     @cached_property
     def start_date(self):
-        return datetime.fromisoformat(self.config["start_date"]).strftime(r"'%Y-%m-%d'")
+        try:
+            return datetime.fromisoformat(self.config["start_date"]).strftime(r"'%Y-%m-%d'")
+        except Exception:
+            return datetime.strptime(self.config["start_date"], "%Y-%m-%dT%H:%M:%SZ").strftime(r"'%Y-%m-%d'")
 
     @cached_property
     def end_date(self):
