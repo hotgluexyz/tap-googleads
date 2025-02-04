@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import copy
 import datetime
 from http import HTTPStatus
 from pathlib import Path
@@ -145,7 +146,7 @@ class CustomerHierarchyStream(GoogleAdsStream):
                 context["customer_id"] = customer_id
                 yield from super().get_records(context)
             except Exception as e:
-                self.logger.error(f"Error processing resource name {name}: {str(e)}")
+                self.logger.error(f"Error processing resource name {customer_id}: {str(e)}")
                 continue
 
     def post_process(self, row, context):
