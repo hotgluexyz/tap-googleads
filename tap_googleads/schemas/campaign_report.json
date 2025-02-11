@@ -1,0 +1,91 @@
+{
+    "type": "object",
+    "properties": {
+        "customer": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "campaign": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "metrics": {
+            "type": "object",
+            "properties": {
+                "absoluteTopImpressionPercentage": {
+                    "type": "number"
+                },
+                "allConversions": {
+                    "type": "number"
+                },
+                "clicks": {
+                    "type": "string"
+                },
+                "conversions": {
+                    "type": "number"
+                },
+                "conversionsValue": {
+                    "type": "number"
+                },
+                "costMicros": {
+                    "type": "string"
+                },
+                "impressions": {
+                    "type": "string"
+                },
+                "searchBudgetLostAbsoluteTopImpressionShare": {
+                    "type": "number"
+                },
+                "searchBudgetLostImpressionShare": {
+                    "type": "number"
+                },
+                "searchBudgetLostTopImpressionShare": {
+                    "type": "number"
+                },
+                "searchAbsoluteTopImpressionShare": {
+                    "type": "number"
+                },
+                "searchExactMatchImpressionShare": {
+                    "type": "number"
+                },
+                "searchImpressionShare": {
+                    "type": "number"
+                },
+                "searchRankLostAbsoluteTopImpressionShare": {
+                    "type": "number"
+                },
+                "searchRankLostImpressionShare": {
+                    "type": "number"
+                },
+                "searchRankLostTopImpressionShare": {
+                    "type": "number"
+                },
+                "searchTopImpressionShare": {
+                    "type": "number"
+                },
+                "topImpressionPercentage": {
+                    "type": "number"
+                }
+            }
+        },
+        "segments": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

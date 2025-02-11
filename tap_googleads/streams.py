@@ -45,6 +45,10 @@ class AccessibleCustomers(GoogleAdsStream):
             A child context for each child stream.
 
         """
+        # NOTE: the line below ensures we only get data for selected customers
+        if self.customer_ids:
+            return {"customer_ids": self.customer_ids}
+
         customer_ids = []
         for customer in record.get("resourceNames", []):
             customer_id = customer.split("/")[1]
@@ -160,7 +164,7 @@ class GeotargetsStream(ReportsStream):
     """Geotargets, worldwide, constant across all customers"""
 
     gaql = """
-    SELECT 
+    SELECT
         geo_target_constant.canonical_name,
         geo_target_constant.country_code,
         geo_target_constant.id,
@@ -287,14 +291,69 @@ class ClickViewReportStream(ReportsStream):
 
         super().validate_response(response)
 
+class AccountsStream(ReportsStream):
+    """Define custom stream."""
+
+    @property
+    def gaql(self):
+        return f"""
+            select
+              customer.id,
+              customer.auto_tagging_enabled,
+              customer.currency_code,
+              customer.descriptive_name,
+              customer.final_url_suffix,
+              customer.manager,
+              customer.optimization_score,
+              customer.pay_per_conversion_eligibility_failure_reasons,
+              customer.test_account,
+              customer.time_zone,
+              customer.tracking_url_template,
+              customer.status,
+              segments.date
+            from
+              customer
+            WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_account"
+    primary_keys = ["customer__id"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "account.json"
 
 class CampaignsStream(ReportsStream):
     """Define custom stream."""
 
     @property
     def gaql(self):
-        return """
-        SELECT campaign.id, campaign.name FROM campaign ORDER BY campaign.id
+        return f"""
+        select
+          customer.id,
+          campaign.id,
+          campaign.ad_serving_optimization_status,
+          campaign.advertising_channel_type,
+          campaign.advertising_channel_sub_type,
+          campaign.base_campaign,
+          campaign.end_date,
+          campaign.experiment_type,
+          campaign.final_url_suffix,
+          campaign.frequency_caps,
+          campaign.name,
+          campaign.optimization_score,
+          campaign.payment_mode,
+          campaign.serving_status,
+          campaign.start_date,
+          campaign.status,
+          campaign.tracking_url_template,
+          campaign.vanity_pharma.vanity_pharma_display_url_mode,
+          campaign.vanity_pharma.vanity_pharma_text,
+          campaign.video_brand_safety_suitability,
+          campaign.labels,
+          segments.date
+        from
+          campaign
+        WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
         """
 
     records_jsonpath = "$.results[*]"
@@ -303,6 +362,126 @@ class CampaignsStream(ReportsStream):
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "campaign.json"
 
+class CampaignReportsStream(ReportsStream):
+    """Define custom stream."""
+
+    @property
+    def gaql(self):
+        return f"""
+            select
+                customer.id,
+                campaign.id,
+                campaign.name,
+                metrics.absolute_top_impression_percentage,
+                metrics.all_conversions,
+                metrics.clicks,
+                metrics.conversions,
+                metrics.conversions_value,
+                metrics.cost_micros,
+                metrics.impressions,
+                metrics.search_budget_lost_absolute_top_impression_share,
+                metrics.search_budget_lost_impression_share,
+                metrics.search_budget_lost_top_impression_share,
+                metrics.search_absolute_top_impression_share,
+                metrics.search_exact_match_impression_share,
+                metrics.search_impression_share,
+                metrics.search_rank_lost_absolute_top_impression_share,
+                metrics.search_rank_lost_impression_share,
+                metrics.search_rank_lost_top_impression_share,
+                metrics.search_top_impression_share,
+                metrics.top_impression_percentage,
+                segments.date
+            from
+                campaign
+            WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_campaign_report"
+    primary_keys = ["campaign__id", "segments__date"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "campaign_report.json"
+
+class KeywordReportsStream(ReportsStream):
+    """Define custom stream."""
+
+    @property
+    def gaql(self):
+        return f"""
+            select
+                customer.id,
+                ad_group.id,
+                ad_group_criterion.criterion_id,
+                ad_group_criterion.keyword.match_type,
+                ad_group_criterion.keyword.text,
+                ad_group_criterion.labels,
+                ad_group_criterion.position_estimates.first_page_cpc_micros,
+                ad_group_criterion.position_estimates.first_position_cpc_micros,
+                ad_group_criterion.status,
+                campaign.id,
+                metrics.absolute_top_impression_percentage,
+                metrics.all_conversions,
+                metrics.all_conversions_value,
+                metrics.clicks,
+                metrics.conversions,
+                metrics.conversions_value,
+                metrics.cost_micros,
+                metrics.historical_creative_quality_score,
+                metrics.historical_landing_page_quality_score,
+                metrics.historical_quality_score,
+                metrics.historical_search_predicted_ctr,
+                metrics.impressions,
+                metrics.search_absolute_top_impression_share,
+                metrics.search_budget_lost_absolute_top_impression_share,
+                metrics.search_budget_lost_top_impression_share,
+                metrics.search_impression_share,
+                metrics.search_rank_lost_absolute_top_impression_share,
+                metrics.search_rank_lost_impression_share,
+                metrics.search_rank_lost_top_impression_share,
+                metrics.search_top_impression_share,
+                metrics.top_impression_percentage,
+                metrics.view_through_conversions,
+                segments.date
+            from
+                keyword_view
+            WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_keyword_report"
+    primary_keys = ["customer__id", "ad_group__id", "ad_group_criterion__criterion_id", "campaign__id", "segments__date"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "keyword_report.json"
+
+class KeywordReportCustomConversionsStream(ReportsStream):
+    """Define custom stream."""
+
+    @property
+    def gaql(self):
+        return f"""
+            select
+                customer.id,
+                ad_group.id,
+                ad_group_criterion.criterion_id,
+                ad_group_criterion.keyword.match_type,
+                ad_group_criterion.keyword.text,
+                campaign.id,
+                metrics.all_conversions,
+                metrics.all_conversions_value,
+                metrics.conversions,
+                metrics.conversions_value,
+                segments.conversion_action_name,
+                segments.date
+            from
+                keyword_view
+            WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_keyword_report_custom_conversions"
+    primary_keys = ["customer__id", "ad_group__id", "ad_group_criterion__criterion_id", "campaign__id", "segments__conversion_action_name", "segments__date"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "keyword_report_custom_conversions.json"
 
 class AdGroupsStream(ReportsStream):
     """Define custom stream."""
@@ -310,9 +489,9 @@ class AdGroupsStream(ReportsStream):
     @property
     def gaql(self):
         return """
-       SELECT ad_group.url_custom_parameters, 
-       ad_group.type, 
-       ad_group.tracking_url_template, 
+       SELECT ad_group.url_custom_parameters,
+       ad_group.type,
+       ad_group.tracking_url_template,
        ad_group.targeting_setting.target_restrictions,
        ad_group.target_roas,
        ad_group.target_cpm_micros,
@@ -336,7 +515,7 @@ class AdGroupsStream(ReportsStream):
        ad_group.campaign,
        ad_group.base_ad_group,
        ad_group.ad_rotation_mode
-       FROM ad_group 
+       FROM ad_group
        """
 
     records_jsonpath = "$.results[*]"
@@ -456,18 +635,18 @@ class GeoPerformance(ReportsStream):
     @property
     def gaql(self):
         return f"""
-    SELECT 
-        campaign.name, 
-        campaign.status, 
-        segments.date, 
-        metrics.clicks, 
+    SELECT
+        campaign.name,
+        campaign.status,
+        segments.date,
+        metrics.clicks,
         metrics.cost_micros,
-        metrics.impressions, 
+        metrics.impressions,
         metrics.conversions,
         geographic_view.location_type,
         geographic_view.country_criterion_id
-    FROM geographic_view 
-    WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date} 
+    FROM geographic_view
+    WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
     """
 
     records_jsonpath = "$.results[*]"
