@@ -15,7 +15,11 @@ from tap_googleads.streams import (
     CampaignPerformanceByAgeRangeAndDevice,
     CampaignPerformanceByGenderAndDevice,
     CampaignPerformanceByLocation,
+    AccountsStream,
     CampaignsStream,
+    CampaignReportsStream,
+    KeywordReportsStream,
+    KeywordReportCustomConversionsStream,
     ClickViewReportStream,
     CustomerHierarchyStream,
     GeoPerformance,
@@ -23,11 +27,15 @@ from tap_googleads.streams import (
 )
 
 STREAM_TYPES = [
-    CampaignsStream,
     AdGroupsStream,
     AdGroupsPerformance,
     AccessibleCustomers,
     CustomerHierarchyStream,
+    AccountsStream,
+    CampaignsStream,
+    CampaignReportsStream,
+    KeywordReportsStream,
+    KeywordReportCustomConversionsStream,
     CampaignPerformance,
     CampaignPerformanceByAgeRangeAndDevice,
     CampaignPerformanceByGenderAndDevice,
@@ -120,7 +128,7 @@ class TapGoogleAds(Tap):
 
         return super().setup_mapper()
 
-        
+
     def discover_streams(self) -> List[Stream]:
         """Return a list of discovered streams."""
         if self.config["enable_click_view_report_stream"]:
@@ -129,7 +137,7 @@ class TapGoogleAds(Tap):
 
     def _validate_config(self, *, raise_errors: bool = True) -> None:
         """Validate configuration.
-        
+
         Raises:
             ConfigValidationError: If the configuration is invalid.
         """
@@ -147,7 +155,7 @@ class TapGoogleAds(Tap):
         if not (has_standard_oauth or has_proxy_oauth):
             raise ConfigValidationError(
                 "Authentication configuration is invalid. Must provide either:\n"
-                "1. Both 'client_id' and 'client_secret' for standard OAuth, or\n" 
+                "1. Both 'client_id' and 'client_secret' for standard OAuth, or\n"
                 "2. Both 'refresh_proxy_url' and 'refresh_proxy_url_auth' for proxy OAuth"
             )
 
@@ -159,3 +167,4 @@ class TapGoogleAds(Tap):
 
 if __name__ == "__main__":
     TapGoogleAds.cli()
+

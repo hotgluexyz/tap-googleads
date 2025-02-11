@@ -1,0 +1,57 @@
+{
+    "type": "object",
+    "properties": {
+        "customer": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "autoTaggingEnabled": {
+                    "type": "boolean"
+                },
+                "currencyCode": {
+                    "type": "string"
+                },
+                "descriptiveName": {
+                    "type": "string"
+                },
+                "finalUrlSuffix": {
+                    "type": "string"
+                },
+                "manager": {
+                    "type": "boolean"
+                },
+                "optimizationScore": {
+                    "type": "number"
+                },
+                "payPerConversionEligibilityFailureReasons": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "testAccount": {
+                    "type": "boolean"
+                },
+                "timeZone": {
+                    "type": "string"
+                },
+                "trackingUrlTemplate": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "segments": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

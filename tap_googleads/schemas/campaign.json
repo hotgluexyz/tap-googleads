@@ -1,17 +1,100 @@
 {
     "type": "object",
     "properties": {
-        "customer_id": {
-            "type": ["string", "null"]
+        "customer": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            }
         },
-        "campaign__resourceName": {
-            "type": ["string", "null"]
+        "campaign": {
+            "type": "object",
+            "properties": {
+                "resourceName": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "adServingOptimizationStatus": {
+                    "type": "string"
+                },
+                "advertisingChannelType": {
+                    "type": "string"
+                },
+                "advertisingChannelSubType": {
+                    "type": "string"
+                },
+                "baseCampaign": {
+                    "type": "string"
+                },
+                "endDate": {
+                    "type": "string"
+                },
+                "experimentType": {
+                    "type": "string"
+                },
+                "finalUrlSuffix": {
+                    "type": "string"
+                },
+                "frequencyCaps": {
+                    "type": "array",
+                    "items": {
+                        "type": "object"
+                    }
+                },
+                "optimizationScore": {
+                    "type": "number"
+                },
+                "paymentMode": {
+                    "type": "string"
+                },
+                "servingStatus": {
+                    "type": "string"
+                },
+                "startDate": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "trackingUrlTemplate": {
+                    "type": "string"
+                },
+                "vanityPharma": {
+                    "type": "object",
+                    "properties": {
+                        "vanityPharmaDisplayUrlMode": {
+                            "type": "string"
+                        },
+                        "vanityPharmaText": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "videoBrandSafetySuitability": {
+                    "type": "string"
+                },
+                "labels": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
         },
-        "campaign__name": {
-            "type": ["string", "null"]
-        },
-        "campaign__id": {
-            "type": ["string", "null"]
+        "segments": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string"
+                }
+            }
         }
     }
 }

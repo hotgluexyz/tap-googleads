@@ -1,0 +1,76 @@
+{
+    "type": "object",
+    "properties": {
+        "customer": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "adGroup": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "adGroupCriterion": {
+            "type": "object",
+            "properties": {
+                "criterionId": {
+                    "type": "string"
+                },
+                "keyword": {
+                    "type": "object",
+                    "properties": {
+                        "matchType": {
+                            "type": "string"
+                        },
+                        "text": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "campaign": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "metrics": {
+            "type": "object",
+            "properties": {
+                "allConversions": {
+                    "type": "number"
+                },
+                "allConversionsValue": {
+                    "type": "number"
+                },
+                "conversions": {
+                    "type": "number"
+                },
+                "conversionsValue": {
+                    "type": "number"
+                }
+            }
+        },
+        "segments": {
+            "type": "object",
+            "properties": {
+                "conversionActionName": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
