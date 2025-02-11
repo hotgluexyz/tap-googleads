@@ -45,10 +45,15 @@ class AccessibleCustomers(GoogleAdsStream):
             A child context for each child stream.
 
         """
+        # NOTE: the line below ensures we only get data for selected customers
+        if self.customer_ids:
+            return {"customer_ids": self.customer_ids}
+
         customer_ids = []
         for customer in record.get("resourceNames", []):
             customer_id = customer.split("/")[1]
             customer_ids.append(customer_id.replace("-", ""))
+
         return {"customer_ids": customer_ids}
 
 

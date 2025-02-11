@@ -156,3 +156,6 @@ class TapGoogleAds(Tap):
                 "Both standard OAuth and proxy OAuth credentials provided. "
                 "Standard OAuth credentials will take precedence."
             )
+
+if __name__ == "__main__":
+    TapGoogleAds.cli()
