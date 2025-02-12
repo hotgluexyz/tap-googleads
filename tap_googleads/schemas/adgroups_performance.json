@@ -2,28 +2,28 @@
     "type": "object",
     "properties": {
         "customer_id": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "campaign__resourceName": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "campaign__id": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "adGroup__resourceName": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "adGroup__id": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "metrics__clicks": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "metrics__costMicros": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "metrics__impressions": {
-            "type": "string"
+            "type": ["string", "null"]
         }
     }
 }

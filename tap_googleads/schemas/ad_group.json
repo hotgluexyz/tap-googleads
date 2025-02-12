@@ -2,49 +2,49 @@
     "type": "object",
     "properties": {
         "adGroup__resourceName": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "adGroup__status": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "adGroup__type": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "adGroup__targetingSetting__targetRestrictions": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "adGroup__id": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "adGroup__customer_id": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "adGroup__name": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "adGroup__baseAdGroup": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "adGroup__campaign": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "adGroup__cpcBidMicros": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "adGroup__cpmBidMicros": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "adGroup__targetCpaMicros": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "adGroup__cpvBidMicros": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "adGroup__targetCpmMicros": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "adGroup__effectiveTargetCpaMicros": {
-            "type": "string"
+            "type": ["string", "null"]
         }
     }
 }

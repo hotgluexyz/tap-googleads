@@ -2,16 +2,16 @@
     "type": "object",
     "properties": {
         "customer_id": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "campaign__resourceName": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "campaign__name": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "campaign__id": {
-            "type": "string"
+            "type": ["string", "null"]
         }
     }
 }

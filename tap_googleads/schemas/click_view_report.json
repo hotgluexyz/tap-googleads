@@ -3,50 +3,50 @@
     "type": "object",
     "properties": {
         "clickView__gclid": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "clickView__adGroupAd": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "clickView__keyword": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "clickView__keywordInfo__matchType": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "customer__id": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "adGroup__id": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "adGroup__name": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "campaign__id": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "campaign__name": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "date": {
             "format": "date",
-            "type": "string"
+            "type": ["string", "null"]
         },
         "segments__adNetworkType": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "segments__device": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "segments__slot": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "segments__clickType": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "metrics__clicks": {
-            "type": "string"
+            "type": ["string", "null"]
         }
     }
 }

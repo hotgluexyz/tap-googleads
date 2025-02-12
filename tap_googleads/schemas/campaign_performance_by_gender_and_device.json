@@ -1,50 +1,50 @@
 {
     "type": "object",
-    "properties":{
+    "properties": {
         "customer_id": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "campaign__resourceName": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "campaign__status": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "campaign__advertisingChannelType": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "campaign__name": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "adGroup__resourceName": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "adGroup__name": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "metrics__clicks": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "metrics__costMicros": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "metrics__ctr": {
-            "type": "number"
+            "type": ["number", "null"]
         },
         "metrics__averageCpc": {
-            "type": "number"
+            "type": ["number", "null"]
         },
         "metrics__impressions": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "adGroupCriterion__resourceName": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "adGroupCriterion__gender__type": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "adGroupCriterion__systemServingStatus": {
-            "type": "string",
+            "type": ["string", "null"],
             "enum": [
                 "ELIGIBLE",
                 "RARELY_SERVED",
@@ -53,13 +53,13 @@
             ]
         },
         "genderView__resourceName": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "segments__device": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "segments__date": {
-            "type": "string"
+            "type": ["string", "null"]
         }
     }
 }

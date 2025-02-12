@@ -2,40 +2,40 @@
     "type": "object",
     "properties": {
         "customer_id": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "campaign__resourceName": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "campaign__status": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "campaign__name": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "metrics__clicks": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "metrics__costMicros": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "metrics__impressions": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "metrics__conversions": {
-            "type": "number"
+            "type": ["number", "null"]
         },
         "segments__date": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "geographicView__resourceName": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "geographicView__locationType": {
-            "type": "string"
+            "type": ["string", "null"]
         },
         "geographicView__countryCriterionId": {
-            "type": "string"
+            "type": ["string", "null"]
         }
     }
 }
