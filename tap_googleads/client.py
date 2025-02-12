@@ -10,6 +10,15 @@ from singer_sdk.streams import RESTStream
 
 from tap_googleads.auth import GoogleAdsAuthenticator, ProxyGoogleAdsAuthenticator
 
+from pendulum import parse
+import typing as t
+import singer_sdk._singerlib as singer
+from singer_sdk.helpers._catalog import pop_deselected_record_properties
+from singer_sdk.helpers._typing import (
+    conform_record_data_types,
+)
+from singer_sdk.helpers._util import utc_now
+
 
 class ResumableAPIError(Exception):
     def __init__(self, message: str, response: requests.Response) -> None:
@@ -152,7 +161,7 @@ class GoogleAdsStream(RESTStream):
 
     @cached_property
     def end_date(self):
-        return datetime.fromisoformat(self.config["end_date"]).strftime(r"'%Y-%m-%d'") if self.config.get("end_date") else datetime.now().strftime(r"'%Y-%m-%d'")
+        return parse(self.config["end_date"]).strftime(r"'%Y-%m-%d'") if self.config.get("end_date") else datetime.now().strftime(r"'%Y-%m-%d'")
 
     @cached_property
     def customer_ids(self):
@@ -175,6 +184,37 @@ class GoogleAdsStream(RESTStream):
 
         return _sanitise_customer_id(login_customer_id)
 
+
+    def _generate_record_messages(
+        self,
+        record: dict,
+    ) -> t.Generator[singer.RecordMessage, None, None]:
+        """Write out a RECORD message.
+
+        Args:
+            record: A single stream record.
+
+        Yields:
+            Record message objects.
+        """
+        for stream_map in self.stream_maps:
+            mapped_record = stream_map.transform(record)
+            pop_deselected_record_properties(mapped_record, self.schema, self.mask, self.logger)
+            mapped_record = conform_record_data_types(
+                stream_name=self.name,
+                record=mapped_record,
+                schema=self.schema,
+                level=self.TYPE_CONFORMANCE_LEVEL,
+                logger=self.logger,
+            )
+            # Emit record if not filtered
+            if mapped_record is not None:
+                yield singer.RecordMessage(
+                    stream=stream_map.stream_alias,
+                    record=mapped_record,
+                    version=None,
+                    time_extracted=utc_now(),
+                )
 
 def _sanitise_customer_id(customer_id: str):
     return customer_id.replace("-", "")

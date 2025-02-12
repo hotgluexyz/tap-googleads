@@ -4,31 +4,26 @@
         "customer_id": {
             "type": "string"
         },
-        "geoTargetConstant": {
-            "type": "object",
-            "properties": {
-                "resourceName": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "countryCode": {
-                    "type": "string"
-                },
-                "targetType": {
-                    "type": "string"
-                },
-                "canonicalName": {
-                    "type": "string"
-                }
-            }
+        "geoTargetConstant__resourceName": {
+            "type": "string"
+        },
+        "geoTargetConstant__status": {
+            "type": "string"
+        },
+        "geoTargetConstant__id": {
+            "type": "string"
+        },
+        "geoTargetConstant__name": {
+            "type": "string"
+        },
+        "geoTargetConstant__countryCode": {
+            "type": "string"
+        },
+        "geoTargetConstant__targetType": {
+            "type": "string"
+        },
+        "geoTargetConstant__canonicalName": {
+            "type": "string"
         }
     }
 }

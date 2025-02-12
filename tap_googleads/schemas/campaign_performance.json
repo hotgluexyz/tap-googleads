@@ -4,50 +4,35 @@
         "customer_id": {
             "type": "string"
         },
-        "campaign": {
-            "type": "object",
-            "properties": {
-                "resourceName": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
+        "campaign__resourceName": {
+            "type": "string"
         },
-        "metrics": {
-            "type": "object",
-            "properties": {
-                "clicks": {
-                    "type": "string"
-                },
-                "costMicros": {
-                    "type": "string"
-                },
-                "ctr": {
-                    "type": "number"
-                },
-                "averageCpc": {
-                    "type": "number"
-                },
-                "impressions": {
-                    "type": "string"
-                }
-            }
+        "campaign__status": {
+            "type": "string"
         },
-        "segments": {
-            "type": "object",
-            "properties": {
-                "device": {
-                    "type": "string"
-                },
-                "date": {
-                    "type": "string"
-                }
-            }
+        "campaign__name": {
+            "type": "string"
+        },
+        "metrics__clicks": {
+            "type": "string"
+        },
+        "metrics__costMicros": {
+            "type": "string"
+        },
+        "metrics__ctr": {
+            "type": "number"
+        },
+        "metrics__averageCpc": {
+            "type": "number"
+        },
+        "metrics__impressions": {
+            "type": "string"
+        },
+        "segments__device": {
+            "type": "string"
+        },
+        "segments__date": {
+            "type": "string"
         }
     }
 }

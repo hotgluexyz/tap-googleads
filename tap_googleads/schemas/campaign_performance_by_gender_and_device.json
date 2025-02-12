@@ -1,100 +1,65 @@
 {
     "type": "object",
-    "properties": {
+    "properties":{
         "customer_id": {
             "type": "string"
         },
-        "campaign": {
-            "type": "object",
-            "properties": {
-                "resourceName": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string"
-                },
-                "advertisingChannelType": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
+        "campaign__resourceName": {
+            "type": "string"
         },
-        "adGroup": {
-            "type": "object",
-            "properties": {
-                "resourceName": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
+        "campaign__status": {
+            "type": "string"
         },
-        "metrics": {
-            "type": "object",
-            "properties": {
-                "clicks": {
-                    "type": "string"
-                },
-                "costMicros": {
-                    "type": "string"
-                },
-                "ctr": {
-                    "type": "number"
-                },
-                "averageCpc": {
-                    "type": "number"
-                },
-                "impressions": {
-                    "type": "string"
-                }
-            }
+        "campaign__advertisingChannelType": {
+            "type": "string"
         },
-        "adGroupCriterion": {
-            "type": "object",
-            "properties": {
-                "resourceName": {
-                    "type": "string"
-                },
-                "gender": {
-                    "type": "object",
-                    "properties": {
-                        "type": {
-                            "type": "string"
-                        }
-                    }
-                },
-                "systemServingStatus": {
-                    "type": "string",
-                    "enum": [
-                        "ELIGIBLE",
-                        "RARELY_SERVED",
-                        "UNKNOWN",
-                        "UNSPECIFIED"
-                    ]
-                }
-            }
+        "campaign__name": {
+            "type": "string"
         },
-        "genderView": {
-            "type": "object",
-            "properties": {
-                "resourceName": {
-                    "type": "string"
-                }
-            }
+        "adGroup__resourceName": {
+            "type": "string"
         },
-        "segments": {
-            "type": "object",
-            "properties": {
-                "device": {
-                    "type": "string"
-                },
-                "date": {
-                    "type": "string"
-                }
-            }
+        "adGroup__name": {
+            "type": "string"
+        },
+        "metrics__clicks": {
+            "type": "string"
+        },
+        "metrics__costMicros": {
+            "type": "string"
+        },
+        "metrics__ctr": {
+            "type": "number"
+        },
+        "metrics__averageCpc": {
+            "type": "number"
+        },
+        "metrics__impressions": {
+            "type": "string"
+        },
+        "adGroupCriterion__resourceName": {
+            "type": "string"
+        },
+        "adGroupCriterion__gender__type": {
+            "type": "string"
+        },
+        "adGroupCriterion__systemServingStatus": {
+            "type": "string",
+            "enum": [
+                "ELIGIBLE",
+                "RARELY_SERVED",
+                "UNKNOWN",
+                "UNSPECIFIED"
+            ]
+        },
+        "genderView__resourceName": {
+            "type": "string"
+        },
+        "segments__device": {
+            "type": "string"
+        },
+        "segments__date": {
+            "type": "string"
         }
     }
 }
