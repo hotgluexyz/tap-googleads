@@ -1,91 +1,137 @@
 {
     "type": "object",
     "properties": {
-        "customer": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                }
-            }
+        "customer__id": {
+            "type": [
+                "string",
+                "null"
+            ]
         },
-        "campaign": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
+        "campaign__id": {
+            "type": [
+                "string",
+                "null"
+            ]
         },
-        "metrics": {
-            "type": "object",
-            "properties": {
-                "absoluteTopImpressionPercentage": {
-                    "type": "number"
-                },
-                "allConversions": {
-                    "type": "number"
-                },
-                "clicks": {
-                    "type": "string"
-                },
-                "conversions": {
-                    "type": "number"
-                },
-                "conversionsValue": {
-                    "type": "number"
-                },
-                "costMicros": {
-                    "type": "string"
-                },
-                "impressions": {
-                    "type": "string"
-                },
-                "searchBudgetLostAbsoluteTopImpressionShare": {
-                    "type": "number"
-                },
-                "searchBudgetLostImpressionShare": {
-                    "type": "number"
-                },
-                "searchBudgetLostTopImpressionShare": {
-                    "type": "number"
-                },
-                "searchAbsoluteTopImpressionShare": {
-                    "type": "number"
-                },
-                "searchExactMatchImpressionShare": {
-                    "type": "number"
-                },
-                "searchImpressionShare": {
-                    "type": "number"
-                },
-                "searchRankLostAbsoluteTopImpressionShare": {
-                    "type": "number"
-                },
-                "searchRankLostImpressionShare": {
-                    "type": "number"
-                },
-                "searchRankLostTopImpressionShare": {
-                    "type": "number"
-                },
-                "searchTopImpressionShare": {
-                    "type": "number"
-                },
-                "topImpressionPercentage": {
-                    "type": "number"
-                }
-            }
+        "campaign__name": {
+            "type": [
+                "string",
+                "null"
+            ]
         },
-        "segments": {
-            "type": "object",
-            "properties": {
-                "date": {
-                    "type": "string"
-                }
-            }
+        "metrics__absoluteTopImpressionPercentage": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "metrics__allConversions": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "metrics__clicks": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "metrics__conversions": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "metrics__conversionsValue": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "metrics__costMicros": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "metrics__impressions": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "metrics__searchBudgetLostAbsoluteTopImpressionShare": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "metrics__searchBudgetLostImpressionShare": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "metrics__searchBudgetLostTopImpressionShare": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "metrics__searchAbsoluteTopImpressionShare": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "metrics__searchExactMatchImpressionShare": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "metrics__searchImpressionShare": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "metrics__searchRankLostAbsoluteTopImpressionShare": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "metrics__searchRankLostImpressionShare": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "metrics__searchRankLostTopImpressionShare": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "metrics__searchTopImpressionShare": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "metrics__topImpressionPercentage": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "segments__date": {
+            "type": [
+                "string",
+                "null"
+            ]
         }
     }
 }

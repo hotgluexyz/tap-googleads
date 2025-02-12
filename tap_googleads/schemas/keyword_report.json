@@ -1,147 +1,203 @@
 {
     "type": "object",
     "properties": {
-        "customer": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                }
-            }
+        "customer__id": {
+            "type": [
+                "string",
+                "null"
+            ]
         },
-        "adGroup": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                }
-            }
+        "adGroup__id": {
+            "type": [
+                "string",
+                "null"
+            ]
         },
-        "adGroupCriterion": {
-            "type": "object",
-            "properties": {
-                "criterionId": {
-                    "type": "string"
-                },
-                "keyword": {
-                    "type": "object",
-                    "properties": {
-                        "matchType": {
-                            "type": "string"
-                        },
-                        "text": {
-                            "type": "string"
-                        }
-                    }
-                },
-                "labels": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "positionEstimates": {
-                    "type": "object",
-                    "properties": {
-                        "firstPageCpcMicros": {
-                            "type": "integer"
-                        },
-                        "firstPositionCpcMicros": {
-                            "type": "integer"
-                        }
-                    }
-                },
-                "status": {
-                    "type": "string"
-                }
-            }
+        "adGroupCriterion__criterionId": {
+            "type": [
+                "string",
+                "null"
+            ]
         },
-        "campaign": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                }
-            }
+        "adGroupCriterion__keyword__matchType": {
+            "type": [
+                "string",
+                "null"
+            ]
         },
-        "metrics": {
-            "type": "object",
-            "properties": {
-                "absoluteTopImpressionPercentage": {
-                    "type": "number"
-                },
-                "allConversions": {
-                    "type": "number"
-                },
-                "allConversionsValue": {
-                    "type": "number"
-                },
-                "clicks": {
-                    "type": "string"
-                },
-                "conversions": {
-                    "type": "number"
-                },
-                "conversionsValue": {
-                    "type": "number"
-                },
-                "costMicros": {
-                    "type": "string"
-                },
-                "historicalCreativeQualityScore": {
-                    "type": "string"
-                },
-                "historicalLandingPageQualityScore": {
-                    "type": "string"
-                },
-                "historicalQualityScore": {
-                    "type": "string"
-                },
-                "historicalSearchPredictedCtr": {
-                    "type": "string"
-                },
-                "impressions": {
-                    "type": "string"
-                },
-                "searchAbsoluteTopImpressionShare": {
-                    "type": "number"
-                },
-                "searchBudgetLostAbsoluteTopImpressionShare": {
-                    "type": "number"
-                },
-                "searchBudgetLostTopImpressionShare": {
-                    "type": "number"
-                },
-                "searchImpressionShare": {
-                    "type": "number"
-                },
-                "searchRankLostAbsoluteTopImpressionShare": {
-                    "type": "number"
-                },
-                "searchRankLostImpressionShare": {
-                    "type": "number"
-                },
-                "searchRankLostTopImpressionShare": {
-                    "type": "number"
-                },
-                "searchTopImpressionShare": {
-                    "type": "number"
-                },
-                "topImpressionPercentage": {
-                    "type": "number"
-                },
-                "viewThroughConversions": {
-                    "type": "string"
-                }
-            }
+        "adGroupCriterion__keyword__text": {
+            "type": [
+                "string",
+                "null"
+            ]
         },
-        "segments": {
-            "type": "object",
-            "properties": {
-                "date": {
-                    "type": "string"
-                }
-            }
+        "adGroupCriterion__labels": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "adGroupCriterion__positionEstimates__firstPageCpcMicros": {
+            "type": [
+                "integer",
+                "null"
+            ]
+        },
+        "adGroupCriterion__positionEstimates__firstPositionCpcMicros": {
+            "type": [
+                "integer",
+                "null"
+            ]
+        },
+        "adGroupCriterion__status": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "campaign__id": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "metrics__absoluteTopImpressionPercentage": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "metrics__allConversions": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "metrics__allConversionsValue": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "metrics__clicks": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "metrics__conversions": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "metrics__conversionsValue": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "metrics__costMicros": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "metrics__historicalCreativeQualityScore": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "metrics__historicalLandingPageQualityScore": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "metrics__historicalQualityScore": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "metrics__historicalSearchPredictedCtr": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "metrics__impressions": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "metrics__searchAbsoluteTopImpressionShare": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "metrics__searchBudgetLostAbsoluteTopImpressionShare": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "metrics__searchBudgetLostTopImpressionShare": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "metrics__searchImpressionShare": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "metrics__searchRankLostAbsoluteTopImpressionShare": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "metrics__searchRankLostImpressionShare": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "metrics__searchRankLostTopImpressionShare": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "metrics__searchTopImpressionShare": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "metrics__topImpressionPercentage": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "metrics__viewThroughConversions": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "segments__date": {
+            "type": [
+                "string",
+                "null"
+            ]
         }
     }
 }
