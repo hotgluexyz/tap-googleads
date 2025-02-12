@@ -2,43 +2,28 @@
     "type": "object",
     "properties": {
         "customer_id": {
-            "type": "string"
+            "type": ["string", "null"]
         },
-        "campaign": {
-            "type": "object",
-            "properties": {
-                "resourceName": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                }
-            }
+        "campaign__resourceName": {
+            "type": ["string", "null"]
         },
-        "adGroup": {
-            "type": "object",
-            "properties": {
-                "resourceName": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                }
-            }
+        "campaign__id": {
+            "type": ["string", "null"]
         },
-        "metrics": {
-            "type": "object",
-            "properties": {
-                "clicks": {
-                    "type": "string"
-                },
-                "costMicros": {
-                    "type": "string"
-                },
-                "impressions": {
-                    "type": "string"
-                }
-            }
+        "adGroup__resourceName": {
+            "type": ["string", "null"]
+        },
+        "adGroup__id": {
+            "type": ["string", "null"]
+        },
+        "metrics__clicks": {
+            "type": ["string", "null"]
+        },
+        "metrics__costMicros": {
+            "type": ["string", "null"]
+        },
+        "metrics__impressions": {
+            "type": ["string", "null"]
         }
     }
 }

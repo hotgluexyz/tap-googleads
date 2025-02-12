@@ -2,86 +2,51 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
     "properties": {
-        "clickView": {
-            "type": "object",
-            "properties": {
-                "gclid": {
-                    "type": "string"
-                },
-                "adGroupAd": {
-                    "type": "string"
-                },
-                "keyword": {
-                    "type": "string"
-                },
-                "keywordInfo": {
-                    "type": "object",
-                    "properties": {
-                        "matchType": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
+        "clickView__gclid": {
+            "type": ["string", "null"]
         },
-        "customer": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                }
-            }
+        "clickView__adGroupAd": {
+            "type": ["string", "null"]
         },
-        "adGroup": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
+        "clickView__keyword": {
+            "type": ["string", "null"]
         },
-        "campaign": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
+        "clickView__keywordInfo__matchType": {
+            "type": ["string", "null"]
+        },
+        "customer__id": {
+            "type": ["string", "null"]
+        },
+        "adGroup__id": {
+            "type": ["string", "null"]
+        },
+        "adGroup__name": {
+            "type": ["string", "null"]
+        },
+        "campaign__id": {
+            "type": ["string", "null"]
+        },
+        "campaign__name": {
+            "type": ["string", "null"]
         },
         "date": {
-            "type": "string",
-            "format": "date"
+            "format": "date",
+            "type": ["string", "null"]
         },
-        "segments": {
-            "type": "object",
-            "properties": {
-                "adNetworkType": {
-                    "type": "string"
-                },
-                "device": {
-                    "type": "string"
-                },
-                "slot": {
-                    "type": "string"
-                },
-                "clickType": {
-                    "type": "string"
-                }
-            }
+        "segments__adNetworkType": {
+            "type": ["string", "null"]
         },
-        "metrics": {
-            "type": "object",
-            "properties": {
-                "clicks": {
-                    "type": "string"
-                }
-            }
+        "segments__device": {
+            "type": ["string", "null"]
+        },
+        "segments__slot": {
+            "type": ["string", "null"]
+        },
+        "segments__clickType": {
+            "type": ["string", "null"]
+        },
+        "metrics__clicks": {
+            "type": ["string", "null"]
         }
     }
 }

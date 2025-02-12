@@ -2,52 +2,37 @@
     "type": "object",
     "properties": {
         "customer_id": {
-            "type": "string"
+            "type": ["string", "null"]
         },
-        "campaign": {
-            "type": "object",
-            "properties": {
-                "resourceName": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
+        "campaign__resourceName": {
+            "type": ["string", "null"]
         },
-        "metrics": {
-            "type": "object",
-            "properties": {
-                "clicks": {
-                    "type": "string"
-                },
-                "costMicros": {
-                    "type": "string"
-                },
-                "ctr": {
-                    "type": "number"
-                },
-                "averageCpc": {
-                    "type": "number"
-                },
-                "impressions": {
-                    "type": "string"
-                }
-            }
+        "campaign__status": {
+            "type": ["string", "null"]
         },
-        "segments": {
-            "type": "object",
-            "properties": {
-                "device": {
-                    "type": "string"
-                },
-                "date": {
-                    "type": "string"
-                }
-            }
+        "campaign__name": {
+            "type": ["string", "null"]
+        },
+        "metrics__clicks": {
+            "type": ["string", "null"]
+        },
+        "metrics__costMicros": {
+            "type": ["string", "null"]
+        },
+        "metrics__ctr": {
+            "type": ["number", "null"]
+        },
+        "metrics__averageCpc": {
+            "type": ["number", "null"]
+        },
+        "metrics__impressions": {
+            "type": ["string", "null"]
+        },
+        "segments__device": {
+            "type": ["string", "null"]
+        },
+        "segments__date": {
+            "type": ["string", "null"]
         }
     }
 }

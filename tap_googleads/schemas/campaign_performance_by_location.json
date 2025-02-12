@@ -2,73 +2,43 @@
     "type": "object",
     "properties": {
         "customer_id": {
-            "type": "string"
+            "type": ["string", "null"]
         },
-        "campaign": {
-            "type": "object",
-            "properties": {
-                "resourceName": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
+        "campaign__resourceName": {
+            "type": ["string", "null"]
         },
-        "metrics": {
-            "type": "object",
-            "properties": {
-                "clicks": {
-                    "type": "string"
-                },
-                "costMicros": {
-                    "type": "string"
-                },
-                "ctr": {
-                    "type": "number"
-                },
-                "averageCpc": {
-                    "type": "number"
-                },
-                "impressions": {
-                    "type": "string"
-                }
-            }
+        "campaign__name": {
+            "type": ["string", "null"]
         },
-        "campaignCriterion": {
-            "type": "object",
-            "properties": {
-                "resourceName": {
-                    "type": "string"
-                },
-                "location": {
-                    "type": "object",
-                    "properties": {
-                        "geoTargetConstant": {
-                            "type": "string"
-                        },
-                        "bidModifier": {
-                            "type": "number"
-                        }
-                    }
-                }
-            }
+        "metrics__clicks": {
+            "type": ["string", "null"]
         },
-        "segments": {
-            "type": "object",
-            "properties": {
-                "date": {
-                    "type": "string"
-                }
-            }
+        "metrics__costMicros": {
+            "type": ["string", "null"]
         },
-        "locationView": {
-            "type": "object",
-            "properties": {
-                "resourceName": {
-                    "type": "string"
-                }
-            }
+        "metrics__ctr": {
+            "type": ["number", "null"]
+        },
+        "metrics__averageCpc": {
+            "type": ["number", "null"]
+        },
+        "metrics__impressions": {
+            "type": ["string", "null"]
+        },
+        "campaignCriterion__resourceName": {
+            "type": ["string", "null"]
+        },
+        "campaignCriterion__location__geoTargetConstant": {
+            "type": ["string", "null"]
+        },
+        "campaignCriterion__location__bidModifier": {
+            "type": ["number", "null"]
+        },
+        "segments__date": {
+            "type": ["string", "null"]
+        },
+        "locationView__resourceName": {
+            "type": ["string", "null"]
         }
     }
 }

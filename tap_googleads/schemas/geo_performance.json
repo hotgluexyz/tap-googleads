@@ -2,60 +2,40 @@
     "type": "object",
     "properties": {
         "customer_id": {
-            "type": "string"
+            "type": ["string", "null"]
         },
-        "campaign": {
-            "type": "object",
-            "properties": {
-                "resourceName": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
+        "campaign__resourceName": {
+            "type": ["string", "null"]
         },
-        "metrics": {
-            "type": "object",
-            "properties": {
-                "clicks": {
-                    "type": "string"
-                },
-                "costMicros": {
-                    "type": "string"
-                },
-                "impressions": {
-                    "type": "string"
-                },
-                "conversions": {
-                    "type": "number"
-                }
-            }
+        "campaign__status": {
+            "type": ["string", "null"]
         },
-        "segments": {
-            "type": "object",
-            "properties": {
-                "date": {
-                    "type": "string"
-                }
-            }
+        "campaign__name": {
+            "type": ["string", "null"]
         },
-        "geographicView": {
-            "type": "object",
-            "properties": {
-                "resourceName": {
-                    "type": "string"
-                },
-                "locationType": {
-                    "type": "string"
-                },
-                "countryCriterionId": {
-                    "type": "string"
-                }
-            }
+        "metrics__clicks": {
+            "type": ["string", "null"]
+        },
+        "metrics__costMicros": {
+            "type": ["string", "null"]
+        },
+        "metrics__impressions": {
+            "type": ["string", "null"]
+        },
+        "metrics__conversions": {
+            "type": ["number", "null"]
+        },
+        "segments__date": {
+            "type": ["string", "null"]
+        },
+        "geographicView__resourceName": {
+            "type": ["string", "null"]
+        },
+        "geographicView__locationType": {
+            "type": ["string", "null"]
+        },
+        "geographicView__countryCriterionId": {
+            "type": ["string", "null"]
         }
     }
 }

@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Any, Dict, Iterable
 from singer_sdk import typing as th  # JSON Schema typing helpers
 
 from tap_googleads.client import GoogleAdsStream, ResumableAPIError, _sanitise_customer_id
+from pendulum import parse
 
 if TYPE_CHECKING:
     from singer_sdk.helpers.types import Context, Record
@@ -267,8 +268,8 @@ class ClickViewReportStream(ReportsStream):
     def request_records(self, context):
         start_value = self.get_starting_replication_key_value(context)
 
-        start_date =  datetime.date.fromisoformat(start_value)
-        end_date = datetime.date.fromisoformat(self.config["end_date"])
+        start_date =  parse(start_value).date()
+        end_date = parse(self.config["end_date"]).date()
 
         delta = end_date - start_date
         dates = (start_date + datetime.timedelta(days=i) for i in range(delta.days))
