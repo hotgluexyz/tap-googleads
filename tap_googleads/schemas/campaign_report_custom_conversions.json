@@ -1,0 +1,59 @@
+{
+    "type": "object",
+    "properties": {
+        "customer__id": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "campaign__id": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "campaign__name": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "metrics__allConversions": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "metrics__allConversionsValue": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "metrics__conversions": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "metrics__conversionsValue": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "segments__conversionActionName": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "segments__date": {
+            "type": [
+                "string",
+                "null"
+            ]
+        }
+    }
+}
