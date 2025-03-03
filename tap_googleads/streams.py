@@ -87,26 +87,21 @@ class CustomerHierarchyStream(GoogleAdsStream):
 
     records_jsonpath = "$.results[*]"
     name = "stream_customer_hierarchy"
-    primary_keys = ["customerClient__id"]
+    primary_keys = ["id"]
     replication_key = None
     parent_stream_type = AccessibleCustomers
     state_partitioning_keys = ["customer_id"]
     schema = th.PropertiesList(
         th.Property("customer_id", th.StringType),
-        th.Property(
-            "customerClient",
-            th.ObjectType(
-                th.Property("resourceName", th.StringType),
-                th.Property("clientCustomer", th.StringType),
-                th.Property("level", th.StringType),
-                th.Property("status", th.StringType),
-                th.Property("timeZone", th.StringType),
-                th.Property("manager", th.BooleanType),
-                th.Property("descriptiveName", th.StringType),
-                th.Property("currencyCode", th.StringType),
-                th.Property("id", th.StringType),
-            ),
-        ),
+        th.Property("resourceName", th.StringType),
+        th.Property("clientCustomer", th.StringType),
+        th.Property("level", th.StringType),
+        th.Property("status", th.StringType),
+        th.Property("timeZone", th.StringType),
+        th.Property("manager", th.BooleanType),
+        th.Property("descriptiveName", th.StringType),
+        th.Property("currencyCode", th.StringType),
+        th.Property("id", th.StringType),
     ).to_dict()
 
     seen_customer_ids = set()
@@ -156,7 +151,8 @@ class CustomerHierarchyStream(GoogleAdsStream):
                 continue
 
     def post_process(self, row, context):
-        row["customer_id"] = _sanitise_customer_id(row["customerClient"]["id"])
+        row = row["customerClient"]
+        row["customer_id"] = _sanitise_customer_id(row["id"])
         return row
 
 class ReportsStream(GoogleAdsStream):
