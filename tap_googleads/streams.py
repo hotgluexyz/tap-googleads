@@ -486,9 +486,11 @@ class GeoPerformance(ReportsStream):
     name = "stream_geo_performance"
     primary_keys = [
         "geographicView__countryCriterionId",
+        "geographicView__locationType",
         "customer_id",
         "campaign__name",
-        "segments__date",
+        "campaign__status",
+        "segments__date"
     ]
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "geo_performance.json"
