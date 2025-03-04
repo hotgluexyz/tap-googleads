@@ -92,16 +92,16 @@ class CustomerHierarchyStream(GoogleAdsStream):
     parent_stream_type = AccessibleCustomers
     state_partitioning_keys = ["customer_id"]
     schema = th.PropertiesList(
-                th.Property("customer_id", th.StringType),
-                th.Property("resourceName", th.StringType),
-                th.Property("clientCustomer", th.StringType),
-                th.Property("level", th.StringType),
-                th.Property("status", th.StringType),
-                th.Property("timeZone", th.StringType),
-                th.Property("manager", th.BooleanType),
-                th.Property("descriptiveName", th.StringType),
-                th.Property("currencyCode", th.StringType),
-                th.Property("id", th.StringType),
+        th.Property("customer_id", th.StringType),
+        th.Property("resourceName", th.StringType),
+        th.Property("clientCustomer", th.StringType),
+        th.Property("level", th.StringType),
+        th.Property("status", th.StringType),
+        th.Property("timeZone", th.StringType),
+        th.Property("manager", th.BooleanType),
+        th.Property("descriptiveName", th.StringType),
+        th.Property("currencyCode", th.StringType),
+        th.Property("id", th.StringType),
     ).to_dict()
 
     seen_customer_ids = set()
@@ -157,6 +157,14 @@ class CustomerHierarchyStream(GoogleAdsStream):
 
 class ReportsStream(GoogleAdsStream):
     parent_stream_type = CustomerHierarchyStream
+
+    def get_records(self, context):
+        records =  super().get_records(context)
+        customer_id = self.config.get('customer_id')
+        if customer_id:
+            for record in records:
+                record["customer_id"] = customer_id
+                yield record
 
 class GeotargetsStream(ReportsStream):
     """Geotargets, worldwide, constant across all customers"""
