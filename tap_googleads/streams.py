@@ -158,6 +158,14 @@ class CustomerHierarchyStream(GoogleAdsStream):
 class ReportsStream(GoogleAdsStream):
     parent_stream_type = CustomerHierarchyStream
 
+    def get_records(self, context):
+        records =  super().get_records(context)
+        customer_id = self.config.get('customer_id')
+        if customer_id:
+            for record in records:
+                record["customer_id"] = customer_id
+                yield record
+
 class GeotargetsStream(ReportsStream):
     """Geotargets, worldwide, constant across all customers"""
 
