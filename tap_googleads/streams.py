@@ -408,6 +408,7 @@ class CampaignPerformanceByAgeRangeAndDevice(ReportsStream):
     records_jsonpath = "$.results[*]"
     name = "stream_campaign_performance_by_age_range_and_device"
     primary_keys = [
+        "adGroup__name",
         "adGroupCriterion__ageRange__type",
         "campaign__name",
         "segments__date",
@@ -430,6 +431,7 @@ class CampaignPerformanceByGenderAndDevice(ReportsStream):
     records_jsonpath = "$.results[*]"
     name = "stream_campaign_performance_by_gender_and_device"
     primary_keys = [
+        "adGroup__name",
         "adGroupCriterion__gender__type",
         "campaign__name",
         "segments__date",
