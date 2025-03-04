@@ -160,7 +160,7 @@ class ReportsStream(GoogleAdsStream):
 
     def get_records(self, context):
         records =  super().get_records(context)
-        customer_id = next(iter(context.get("customer_ids", [])), None)
+        customer_id = self.config.get('customer_id')
         if customer_id:
             for record in records:
                 record["customer_id"] = customer_id
