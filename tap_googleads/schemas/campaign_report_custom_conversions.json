@@ -53,7 +53,8 @@
             "type": [
                 "string",
                 "null"
-            ]
+            ],
+            "format": "date"
         }
     }
 }

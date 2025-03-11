@@ -135,4 +135,7 @@ dmypy.json
 
 # vscode settings
 .vscode
+
+# Service Accounts
+service-account.json
 .DS_Store

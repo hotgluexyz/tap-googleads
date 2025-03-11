@@ -41,25 +41,29 @@
       "type": [
         "number",
         "null"
-      ]
+      ],
+      "format": "number-string"
     },
     "metrics__allConversionsValue": {
       "type": [
         "number",
         "null"
-      ]
+      ],
+      "format": "number-string"
     },
     "metrics__conversions": {
       "type": [
         "number",
         "null"
-      ]
+      ],
+      "format": "number-string"
     },
     "metrics__conversionsValue": {
       "type": [
         "number",
         "null"
-      ]
+      ],
+      "format": "number-string"
     },
     "segments__conversionActionName": {
       "type": [
@@ -71,7 +75,8 @@
       "type": [
         "string",
         "null"
-      ]
+      ],
+      "format": "date"
     }
   }
 }

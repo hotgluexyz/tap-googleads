@@ -1,0 +1,43 @@
+{
+    "type": "object",
+    "properties": {
+      "customer__id": {
+        "type": ["string", "null"]
+      },
+      "adGroup__id": {
+        "type": ["string", "null"]
+      },
+      "adGroupCriterion__criterionId": {
+        "type": ["string", "null"]
+      },
+      "adGroupCriterion__gender__type": {
+        "type": ["string", "null"]
+      },
+      "campaign__id": {
+        "type": ["string", "null"]
+      },
+      "metrics__allConversions": {
+        "type": ["string", "number", "null"],
+        "format": "number-string"
+      },
+      "metrics__allConversionsValue": {
+        "type": ["string", "number", "null"],
+        "format": "number-string"
+      },
+      "metrics__conversions": {
+        "type": ["string", "number", "null"],
+        "format": "number-string"
+      },
+      "metrics__conversionsValue": {
+        "type": ["string", "number", "null"],
+        "format": "number-string"
+      },
+      "segments__conversionActionName": {
+        "type": ["string", "null"]
+      },
+      "segments__date": {
+        "type": ["string", "null"],
+        "format": "date"
+      }
+    }
+  }

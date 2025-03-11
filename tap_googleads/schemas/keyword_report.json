@@ -39,13 +39,13 @@
         },
         "adGroupCriterion__positionEstimates__firstPageCpcMicros": {
             "type": [
-                "integer",
+                "string",
                 "null"
             ]
         },
         "adGroupCriterion__positionEstimates__firstPositionCpcMicros": {
             "type": [
-                "integer",
+                "string",
                 "null"
             ]
         },
@@ -65,43 +65,51 @@
             "type": [
                 "number",
                 "null"
-            ]
+            ],
+            "format": "number-string"
         },
         "metrics__allConversions": {
             "type": [
                 "number",
                 "null"
-            ]
+            ],
+            "format": "number-string"
         },
         "metrics__allConversionsValue": {
             "type": [
                 "number",
                 "null"
-            ]
+            ],
+            "format": "number-string"
         },
         "metrics__clicks": {
             "type": [
                 "string",
                 "null"
-            ]
+            ],
+            "format": "number-string"
         },
         "metrics__conversions": {
             "type": [
                 "number",
                 "null"
-            ]
+            ],
+            "format": "number-string"
         },
         "metrics__conversionsValue": {
             "type": [
                 "number",
                 "null"
-            ]
+            ],
+            "format": "number-string"
         },
         "metrics__costMicros": {
             "type": [
                 "string",
+                "number",
                 "null"
-            ]
+            ],
+            "format": "number-string"
         },
         "metrics__historicalCreativeQualityScore": {
             "type": [
@@ -130,8 +138,10 @@
         "metrics__impressions": {
             "type": [
                 "string",
+                "number",
                 "null"
-            ]
+            ],
+            "format": "number-string"
         },
         "metrics__searchAbsoluteTopImpressionShare": {
             "type": [
@@ -185,19 +195,23 @@
             "type": [
                 "number",
                 "null"
-            ]
+            ],
+            "format": "number-string"
         },
         "metrics__viewThroughConversions": {
             "type": [
                 "string",
+                "number",
                 "null"
-            ]
+            ],
+            "format": "number-string"
         },
         "segments__date": {
             "type": [
                 "string",
                 "null"
-            ]
+            ],
+            "format": "date"
         }
     }
 }

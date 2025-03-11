@@ -1,0 +1,28 @@
+{
+    "type": "object",
+    "properties": {
+      "customer__id": {
+        "type": ["string", "null"]
+      },
+      "video__id": {
+        "type": ["string", "null"]
+      },
+      "video__channelId": {
+        "type": ["string", "null"]
+      },
+      "video__durationMillis": {
+        "type": ["string", "integer", "null"],
+        "format": "integer-string"
+      },
+      "video__resourceName": {
+        "type": ["string", "null"]
+      },
+      "video__title": {
+        "type": ["string", "null"]
+      },
+      "segments__date": {
+        "type": ["string", "null"],
+        "format": "date"
+      }
+    }
+  }

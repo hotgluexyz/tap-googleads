@@ -1,0 +1,64 @@
+{
+    "type": "object",
+    "properties": {
+      "customer__id": {
+        "type": ["string", "null"]
+      },
+      "adGroup__id": {
+        "type": ["string", "null"]
+      },
+      "campaign__id": {
+        "type": ["string", "null"]
+      },
+      "geographicView__resourceName": {
+        "type": ["string", "null"]
+      },
+      "geographicView__countryCriterionId": {
+        "type": ["string", "null"]
+      },
+      "geographicView__locationType": {
+        "type": ["string", "null"]
+      },
+      "metrics__clicks": {
+        "type": ["string", "number", "null"],
+        "format": "number-string"
+      },
+      "metrics__conversions": {
+        "type": ["string", "number", "null"],
+        "format": "number-string"
+      },
+      "metrics__conversionsValue": {
+        "type": ["string", "number", "null"],
+        "format": "number-string"
+      },
+      "metrics__costMicros": {
+        "type": ["string", "number", "null"],
+        "format": "number-string"
+      },
+      "metrics__impressions": {
+        "type": ["string", "number", "null"],
+        "format": "number-string"
+      },
+      "metrics__allConversions": {
+        "type": ["string", "number", "null"],
+        "format": "number-string"
+      },
+      "metrics__allConversionsValue": {
+        "type": ["string", "number", "null"],
+        "format": "number-string"
+      },
+      "segments__geoTargetCity": {
+        "type": ["string", "null"]
+      },
+      "segments__geoTargetPostalCode": {
+        "type": ["string", "null"]
+      },
+      "segments__geoTargetState": {
+        "type": ["string", "null"]
+      },
+      "segments__date": {
+        "type": ["string", "null"],
+        "format": "date"
+      }
+    }
+  }

@@ -53,7 +53,6 @@ class AccessibleCustomers(GoogleAdsStream):
 
         return {"customer_ids": customer_ids}
 
-
 class CustomerHierarchyStream(GoogleAdsStream):
     """Customer Hierarchy.
 
@@ -193,7 +192,6 @@ class GeotargetsStream(ReportsStream):
         yield from super().get_records(context)
         self.selected = False  # sync once only
 
-
 class ClickViewReportStream(ReportsStream):
     date: datetime.date
 
@@ -308,11 +306,9 @@ class AccountsStream(ReportsStream):
               customer.test_account,
               customer.time_zone,
               customer.tracking_url_template,
-              customer.status,
-              segments.date
+              customer.status
             from
               customer
-            WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
         """
 
     records_jsonpath = "$.results[*]"
@@ -348,16 +344,14 @@ class CampaignsStream(ReportsStream):
           campaign.vanity_pharma.vanity_pharma_display_url_mode,
           campaign.vanity_pharma.vanity_pharma_text,
           campaign.video_brand_safety_suitability,
-          campaign.labels,
-          segments.date
+          campaign.labels
         from
           campaign
-        WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
         """
 
     records_jsonpath = "$.results[*]"
     name = "stream_campaign"
-    primary_keys = ["campaign__id"]
+    primary_keys = ["campaign__id", "customer__id"]
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "campaign.json"
 
@@ -397,7 +391,7 @@ class CampaignReportsStream(ReportsStream):
 
     records_jsonpath = "$.results[*]"
     name = "stream_campaign_report"
-    primary_keys = ["campaign__id", "segments__date"]
+    primary_keys = ["campaign__id", "segments__date", "customer__id"]
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "campaign_report.json"
 
@@ -424,9 +418,643 @@ class CampaignReportCustomConversionsStream(ReportsStream):
 
     records_jsonpath = "$.results[*]"
     name = "stream_campaign_report_custom_conversions"
-    primary_keys = ["customer__id", "campaign__id", "segments__conversion_action_name", "segments__date"]
+    primary_keys = ["customer__id", "campaign__id", "segments__conversionActionName", "segments__date"]
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "campaign_report_custom_conversions.json"
+
+class CityReportStream(ReportsStream):
+    """Define custom stream for city-level reporting."""
+
+    @property
+    def gaql(self):
+        return f"""
+        select
+          customer.id,
+          ad_group.id,
+          campaign.id,
+          geographic_view.country_criterion_id,
+          geographic_view.location_type,
+          geographic_view.resource_name,
+          metrics.clicks,
+          metrics.conversions,
+          metrics.conversions_value,
+          metrics.cost_micros,
+          metrics.impressions,
+          segments.geo_target_city,
+          segments.date
+        from
+          geographic_view
+        WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_city_report"
+    primary_keys = ["customer__id", "campaign__id", "adGroup__id", "segments__date", "segments__geoTargetCity"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "city_report.json"
+
+class CityReportCustomConversionsStream(ReportsStream):
+    """Define custom stream for city-level conversion reporting."""
+
+    @property
+    def gaql(self):
+        return f"""
+        select
+          customer.id,
+          ad_group.id,
+          campaign.id,
+          geographic_view.country_criterion_id,
+          geographic_view.location_type,
+          geographic_view.resource_name,
+          metrics.all_conversions,
+          metrics.all_conversions_value,
+          metrics.conversions,
+          metrics.conversions_value,
+          segments.conversion_action_name,
+          segments.geo_target_city,
+          segments.date
+        from
+          geographic_view
+        WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_city_report_custom_conversions"
+    primary_keys = ["customer__id", "campaign__id", "adGroup__id", "segments__date", "segments__conversionActionName", "segments__geoTargetCity"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "city_report_custom_conversions.json"
+
+class DemoDeviceStream(ReportsStream):
+    """Define custom stream for device-level campaign reporting."""
+
+    @property
+    def gaql(self):
+        return f"""
+        SELECT
+          customer.id,
+          campaign.id,
+          segments.date,
+          segments.device,
+          metrics.all_conversions,
+          metrics.all_conversions_value,
+          metrics.clicks,
+          metrics.conversions,
+          metrics.conversions_value,
+          metrics.cost_micros,
+          metrics.impressions,
+          metrics.view_through_conversions
+        FROM
+          campaign
+        WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_demo_device"
+    primary_keys = ["customer__id", "campaign__id", "segments__date", "segments__device"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "demo_device.json"
+
+class DemoDeviceCustomConversionsStream(ReportsStream):
+    """Define custom stream for device-level campaign conversion reporting."""
+
+    @property
+    def gaql(self):
+        return f"""
+        SELECT
+          customer.id,
+          campaign.id,
+          segments.date,
+          segments.device,
+          segments.conversion_action_name,
+          metrics.all_conversions,
+          metrics.all_conversions_value,
+          metrics.conversions,
+          metrics.conversions_value,
+          metrics.view_through_conversions
+        FROM
+          campaign
+        WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_demo_device_custom_conversions"
+    primary_keys = ["customer__id", "campaign__id", "segments__date", "segments__device", "segments__conversionActionName"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "demo_device_custom_conversions.json"
+
+class DemoRegionStream(ReportsStream):
+    """Define custom stream for region-level reporting."""
+
+    @property
+    def gaql(self):
+        return f"""
+        SELECT
+          geographic_view.country_criterion_id,
+          segments.date,
+          segments.geo_target_region,
+          metrics.all_conversions,
+          metrics.all_conversions_value,
+          metrics.clicks,
+          metrics.conversions,
+          metrics.conversions_value,
+          metrics.cost_micros,
+          metrics.impressions,
+          metrics.view_through_conversions,
+          customer.id,
+          campaign.id
+        FROM
+          geographic_view
+        WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_demo_region"
+    primary_keys = ["customer__id", "campaign__id", "segments__date", "geographicView__countryCriterionId", "segments__geoTargetRegion"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "demo_region.json"
+
+class DemoRegionCustomConversionsStream(ReportsStream):
+    """Define custom stream for region-level conversion reporting."""
+
+    @property
+    def gaql(self):
+        return f"""
+        SELECT
+          geographic_view.country_criterion_id,
+          segments.date,
+          segments.geo_target_region,
+          segments.conversion_action_name,
+          metrics.all_conversions,
+          metrics.all_conversions_value,
+          metrics.conversions,
+          metrics.conversions_value,
+          metrics.view_through_conversions,
+          customer.id,
+          campaign.id
+        FROM
+          geographic_view
+        WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_demo_region_custom_conversions"
+    primary_keys = ["customer__id", "campaign__id", "segments__date", "geographicView__countryCriterionId", "segments__conversionActionName", "segments__geoTargetRegion"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "demo_region_custom_conversions.json"
+
+class ExpandedTextAdStream(ReportsStream):
+    """Define custom stream for expanded text ads."""
+
+    @property
+    def gaql(self):
+        return f"""
+        select
+          customer.id,
+          campaign.id,
+          ad_group.id,
+          ad_group_ad.ad.id,
+          ad_group_ad.ad.expanded_text_ad.description,
+          ad_group_ad.ad.expanded_text_ad.description2,
+          ad_group_ad.ad.expanded_text_ad.headline_part1,
+          ad_group_ad.ad.expanded_text_ad.headline_part2,
+          ad_group_ad.ad.expanded_text_ad.headline_part3,
+          ad_group_ad.ad.expanded_text_ad.path1,
+          ad_group_ad.ad.expanded_text_ad.path2
+        from
+          ad_group_ad
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_expanded_text_ad"
+    primary_keys = ["customer__id", "campaign__id", "adGroup__id", "adGroupAd__ad__id"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "expanded_text_ad.json"
+
+class GenderReportStream(ReportsStream):
+    """Define custom stream for gender-level reporting."""
+
+    @property
+    def gaql(self):
+        return f"""
+        select
+          customer.id,
+          ad_group.id,
+          ad_group_criterion.criterion_id,
+          ad_group_criterion.gender.type,
+          campaign.id,
+          metrics.clicks,
+          metrics.conversions,
+          metrics.conversions_value,
+          metrics.cost_micros,
+          metrics.impressions,
+          segments.date
+        from
+          gender_view
+        WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_gender_report"
+    primary_keys = ["customer__id", "campaign__id", "adGroup__id", "adGroupCriterion__criterionId", "segments__date", "adGroupCriterion__gender__type"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "gender_report.json"
+
+class GenderReportCustomConversionsStream(ReportsStream):
+    """Define custom stream for gender-level conversion reporting."""
+
+    @property
+    def gaql(self):
+        return f"""
+        select
+          customer.id,
+          ad_group.id,
+          ad_group_criterion.criterion_id,
+          ad_group_criterion.gender.type,
+          campaign.id,
+          metrics.all_conversions,
+          metrics.all_conversions_value,
+          metrics.conversions,
+          metrics.conversions_value,
+          segments.conversion_action_name,
+          segments.date
+        from
+          gender_view
+        WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_gender_report_custom_conversions"
+    primary_keys = ["customer__id", "campaign__id", "adGroup__id", "adGroupCriterion__criterionId", "segments__date", "segments__conversionActionName", "adGroupCriterion__gender__type"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "gender_report_custom_conversions.json"
+
+class MetroReportStream(ReportsStream):
+    """Define custom stream for metro-level reporting."""
+
+    @property
+    def gaql(self):
+        return f"""
+        select
+          customer.id,
+          ad_group.id,
+          campaign.id,
+          geographic_view.resource_name,
+          geographic_view.country_criterion_id,
+          geographic_view.location_type,
+          metrics.clicks,
+          metrics.conversions,
+          metrics.conversions_value,
+          metrics.cost_micros,
+          metrics.impressions,
+          metrics.all_conversions,
+          metrics.all_conversions_value,
+          segments.geo_target_metro,
+          segments.date
+        from
+          geographic_view
+        WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_metro_report"
+    primary_keys = ["customer__id", "campaign__id", "adGroup__id", "geographicView__countryCriterionId", "segments__date", "geographicView__locationType", "segments__geoTargetMetro"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "metro_report.json"
+
+class MetroReportCustomConversionsStream(ReportsStream):
+    """Define custom stream for metro-level conversion reporting."""
+
+    @property
+    def gaql(self):
+        return f"""
+        select
+          customer.id,
+          ad_group.id,
+          campaign.id,
+          geographic_view.resource_name,
+          geographic_view.country_criterion_id,
+          geographic_view.location_type,
+          metrics.conversions,
+          metrics.conversions_value,
+          metrics.all_conversions,
+          metrics.all_conversions_value,
+          segments.conversion_action_name,
+          segments.geo_target_metro,
+          segments.date
+        from
+          geographic_view
+        WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_metro_report_custom_conversions"
+    primary_keys = ["customer__id", "campaign__id", "adGroup__id", "geographicView__countryCriterionId", "segments__date", "segments__conversionActionName", "geographicView__locationType", "segments__geoTargetMetro"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "metro_report_custom_conversions.json"
+
+class PostalCodeReportStream(ReportsStream):
+    """Define custom stream for postal code-level reporting."""
+
+    @property
+    def gaql(self):
+        return f"""
+        select
+          customer.id,
+          ad_group.id,
+          campaign.id,
+          geographic_view.resource_name,
+          geographic_view.country_criterion_id,
+          geographic_view.location_type,
+          metrics.clicks,
+          metrics.conversions,
+          metrics.conversions_value,
+          metrics.cost_micros,
+          metrics.impressions,
+          metrics.all_conversions,
+          metrics.all_conversions_value,
+          segments.geo_target_city,
+          segments.geo_target_postal_code,
+          segments.geo_target_state,
+          segments.date
+        from
+          geographic_view
+        WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_postal_code_report"
+    primary_keys = ["customer__id", "campaign__id", "adGroup__id", "geographicView__countryCriterionId", "segments__date", "geographicView__locationType", "segments__geoTargetCity", "segments__geoTargetPostalCode", "segments__geoTargetState"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "postal_code_report.json"
+
+class PostalCodeReportCustomConversionsStream(ReportsStream):
+    """Define custom stream for postal code-level conversion reporting."""
+
+    @property
+    def gaql(self):
+        return f"""
+        select
+          customer.id,
+          ad_group.id,
+          campaign.id,
+          geographic_view.resource_name,
+          geographic_view.country_criterion_id,
+          geographic_view.location_type,
+          metrics.conversions,
+          metrics.conversions_value,
+          metrics.all_conversions,
+          metrics.all_conversions_value,
+          segments.geo_target_city,
+          segments.geo_target_postal_code,
+          segments.geo_target_state,
+          segments.conversion_action_name,
+          segments.date
+        from
+          geographic_view
+        WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_postal_code_report_custom_conversions"
+    primary_keys = ["customer__id", "campaign__id", "adGroup__id", "geographicView__countryCriterionId", "segments__date", "segments__conversionActionName", "geographicView__locationType", "segments__geoTargetCity", "segments__geoTargetPostalCode", "segments__geoTargetState"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "postal_code_report_custom_conversions.json"
+
+class RegionReportStream(ReportsStream):
+    """Define custom stream for region-level reporting."""
+
+    @property
+    def gaql(self):
+        return f"""
+        select
+          customer.id,
+          ad_group.id,
+          campaign.id,
+          geographic_view.country_criterion_id,
+          geographic_view.location_type,
+          geographic_view.resource_name,
+          metrics.clicks,
+          metrics.conversions,
+          metrics.conversions_value,
+          metrics.cost_micros,
+          metrics.impressions,
+          segments.geo_target_region,
+          segments.date
+        from
+          geographic_view
+        WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_region_report"
+    primary_keys = ["customer__id", "campaign__id", "adGroup__id", "geographicView__countryCriterionId", "segments__date", "geographicView__locationType", "segments__geoTargetRegion"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "region_report.json"
+
+class RegionReportCustomConversionsStream(ReportsStream):
+    """Define custom stream for region-level conversion reporting."""
+
+    @property
+    def gaql(self):
+        return f"""
+        select
+          customer.id,
+          ad_group.id,
+          campaign.id,
+          geographic_view.country_criterion_id,
+          geographic_view.location_type,
+          geographic_view.resource_name,
+          metrics.all_conversions,
+          metrics.all_conversions_value,
+          metrics.conversions,
+          metrics.conversions_value,
+          segments.conversion_action_name,
+          segments.geo_target_region,
+          segments.date
+        from
+          geographic_view
+        WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_region_report_custom_conversions"
+    primary_keys = ["customer__id", "campaign__id", "adGroup__id", "geographicView__countryCriterionId", "segments__date", "segments__conversionActionName", "geographicView__locationType", "segments__geoTargetRegion"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "region_report_custom_conversions.json"
+
+class ResponsiveSearchAdStream(ReportsStream):
+    """Define custom stream for responsive search ads."""
+
+    @property
+    def gaql(self):
+        return f"""
+        select
+          customer.id,
+          ad_group.id,
+          ad_group_ad.ad.id,
+          ad_group_ad.ad.responsive_search_ad.descriptions,
+          ad_group_ad.ad.responsive_search_ad.headlines,
+          ad_group_ad.ad.responsive_search_ad.path1,
+          ad_group_ad.ad.responsive_search_ad.path2
+        from
+          ad_group_ad
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_responsive_search_ad"
+    primary_keys = ["customer__id", "adGroup__id", "adGroupAd__ad__id"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "responsive_search_ad.json"
+
+class SearchQueryReportStream(ReportsStream):
+    """Define custom stream for search query reporting."""
+
+    @property
+    def gaql(self):
+        return f"""
+        select
+          customer.id,
+          ad_group.id,
+          campaign.id,
+          metrics.clicks,
+          metrics.conversions,
+          metrics.conversions_value,
+          metrics.cost_micros,
+          metrics.impressions,
+          search_term_view.search_term,
+          segments.keyword.ad_group_criterion,
+          segments.keyword.info.match_type,
+          segments.keyword.info.text,
+          segments.search_term_match_type,
+          segments.date
+        from
+          search_term_view
+        WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_search_query_report"
+    primary_keys = ["customer__id", "campaign__id", "adGroup__id", "searchTermView__searchTerm", "segments__date", "segments__keyword__adGroupCriterion", "segments__keyword__info__matchType", "segments__keyword__info__text", "segments__searchTermMatchType"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "search_query_report.json"
+
+class SearchQueryReportCustomConversionsStream(ReportsStream):
+    """Define custom stream for search query conversion reporting."""
+
+    @property
+    def gaql(self):
+        return f"""
+        select
+          customer.id,
+          ad_group.id,
+          campaign.id,
+          metrics.all_conversions,
+          metrics.all_conversions_value,
+          metrics.conversions,
+          metrics.conversions_value,
+          search_term_view.search_term,
+          segments.conversion_action_name,
+          segments.keyword.ad_group_criterion,
+          segments.search_term_match_type,
+          segments.date
+        from
+          search_term_view
+        WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_search_query_report_custom_conversions"
+    primary_keys = ["customer__id", "campaign__id", "adGroup__id", "searchTermView__searchTerm", "segments__date", "segments__conversionActionName", "segments__keyword__adGroupCriterion", "segments__searchTermMatchType"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "search_query_report_custom_conversions.json"
+
+class VideoStream(ReportsStream):
+    """Define custom stream for video reporting."""
+
+    @property
+    def gaql(self):
+        return f"""
+        select
+          customer.id,
+          video.id,
+          video.channel_id,
+          video.duration_millis,
+          video.resource_name,
+          video.title
+        from
+          video
+        WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_video"
+    primary_keys = ["customer__id", "video__id"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "video.json"
+
+class VideoReportStream(ReportsStream):
+    """Define custom stream for video performance reporting."""
+
+    @property
+    def gaql(self):
+        return f"""
+        select
+          customer.id,
+          campaign.id,
+          ad_group.id,
+          video.id,
+          metrics.clicks,
+          metrics.conversions,
+          metrics.conversions_value,
+          metrics.cost_micros,
+          metrics.impressions,
+          metrics.all_conversions,
+          metrics.all_conversions_value,
+          metrics.video_quartile_p100_rate,
+          metrics.video_quartile_p75_rate,
+          metrics.video_quartile_p50_rate,
+          metrics.video_quartile_p25_rate,
+          metrics.video_view_rate,
+          metrics.video_views,
+          segments.date
+        from
+          video
+        WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_video_report"
+    primary_keys = ["customer__id", "campaign__id", "adGroup__id", "video__id", "segments__date"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "video_report.json"
+
+class VideoReportCustomConversionsStream(ReportsStream):
+    """Define custom stream for video conversion reporting."""
+
+    @property
+    def gaql(self):
+        return f"""
+        select
+          customer.id,
+          campaign.id,
+          ad_group.id,
+          video.id,
+          metrics.conversions,
+          metrics.conversions_value,
+          metrics.all_conversions,
+          metrics.all_conversions_value,
+          segments.conversion_action_name,
+          segments.date
+        from
+          video
+        WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_video_report_custom_conversions"
+    primary_keys = ["customer__id", "campaign__id", "adGroup__id", "video__id", "segments__date", "segments__conversionActionName"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "video_report_custom_conversions.json"
 
 class KeywordReportsStream(ReportsStream):
     """Define custom stream."""
@@ -509,47 +1137,176 @@ class KeywordReportCustomConversionsStream(ReportsStream):
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "keyword_report_custom_conversions.json"
 
+class AdStream(ReportsStream):
+    """Stream for basic ad information from Google Ads."""
+    
+    
+    @property
+    def gaql(self):
+        query = """
+        SELECT
+            customer.id,
+            ad_group_ad.ad.id,
+            ad_group.id,
+            ad_group_ad.ad.display_url,
+            ad_group_ad.ad.final_app_urls,
+            ad_group_ad.ad.final_mobile_urls,
+            ad_group_ad.ad.final_url_suffix,
+            ad_group_ad.ad.final_urls,
+            ad_group_ad.ad.name,
+            ad_group_ad.status,
+            ad_group_ad.ad.tracking_url_template,
+            ad_group_ad.ad.type
+        FROM
+            ad_group_ad
+        """
+        return query
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_ad"
+    primary_keys = ["customer__id", "adGroupAd__ad__id", "adGroup__id"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "ad.json"
+
+class AdReportStream(ReportsStream):
+    """Stream for ad report information from Google Ads."""
+
+    @property
+    def gaql(self):
+        return f"""
+        SELECT
+            customer.id,
+            ad_group.id,
+            ad_group.name,
+            ad_group.status,
+            ad_group_ad.ad.added_by_google_ads,
+            ad_group_ad.ad.call_ad.description1,
+            ad_group_ad.ad.call_ad.description2,
+            ad_group_ad.ad.device_preference,
+            ad_group_ad.ad.display_url,
+            ad_group_ad.ad.expanded_text_ad.description,
+            ad_group_ad.ad.expanded_text_ad.description2,
+            ad_group_ad.ad.expanded_text_ad.headline_part1,
+            ad_group_ad.ad.expanded_text_ad.headline_part2,
+            ad_group_ad.ad.expanded_text_ad.headline_part3,
+            ad_group_ad.ad.expanded_text_ad.path1,
+            ad_group_ad.ad.expanded_text_ad.path2,
+            ad_group_ad.ad.final_mobile_urls,
+            ad_group_ad.ad.final_urls,
+            ad_group_ad.ad.id,
+            ad_group_ad.ad.legacy_responsive_display_ad.call_to_action_text,
+            ad_group_ad.ad.legacy_responsive_display_ad.description,
+            ad_group_ad.ad.text_ad.description1,
+            ad_group_ad.ad.text_ad.description2,
+            ad_group_ad.ad.text_ad.headline,
+            ad_group_ad.ad.tracking_url_template,
+            ad_group_ad.ad.type,
+            ad_group_ad.ad.url_custom_parameters,
+            ad_group_ad.labels,
+            ad_group_ad.policy_summary.approval_status,
+            ad_group_ad.status,
+            campaign.id,
+            campaign.name,
+            campaign.status,
+            metrics.all_conversions,
+            metrics.all_conversions_value,
+            metrics.clicks,
+            metrics.conversions,
+            metrics.conversions_value,
+            metrics.cost_micros,
+            metrics.impressions,
+            metrics.view_through_conversions,
+            segments.date
+        FROM
+            ad_group_ad
+        WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+    records_jsonpath = "$.results[*]"
+    name = "stream_ad_report"
+    primary_keys = ["customer__id", "adGroupAd__ad__id", "adGroup__id", "segments__date"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "ad_report.json"
+
+class AdStatsStream(ReportsStream):
+    """Stream for ad stats information from Google Ads."""
+
+    @property
+    def gaql(self):
+        return f"""
+            SELECT
+                customer.id,
+                ad_group.id,
+                ad_group_ad.ad.id,
+                campaign.id,
+                metrics.active_view_impressions,
+                metrics.active_view_measurability,
+                metrics.active_view_measurable_cost_micros,
+                metrics.active_view_measurable_impressions,
+                metrics.active_view_viewability,
+                metrics.clicks,
+                metrics.conversions_value,
+                metrics.conversions,
+                metrics.cost_micros,
+                metrics.impressions,
+                metrics.interaction_event_types,
+                metrics.interactions,
+                metrics.view_through_conversions,
+                segments.ad_network_type,
+                segments.device,
+                segments.date
+            FROM
+                ad_group_ad
+            WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+    records_jsonpath = "$.results[*]"
+    name = "stream_ad_stats"
+    primary_keys = ["customer__id", "adGroupAd__ad__id", "adGroup__id", "segments__date", "segments__device", "segments__adNetworkType"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "ad_stats.json"
+
 class AdGroupsStream(ReportsStream):
     """Define custom stream."""
 
     @property
     def gaql(self):
         return """
-       SELECT ad_group.url_custom_parameters,
-       ad_group.type,
-       ad_group.tracking_url_template,
-       ad_group.targeting_setting.target_restrictions,
-       ad_group.target_roas,
-       ad_group.target_cpm_micros,
-       ad_group.status,
-       ad_group.target_cpa_micros,
-       ad_group.resource_name,
-       ad_group.percent_cpc_bid_micros,
-       ad_group.name,
-       ad_group.labels,
-       ad_group.id,
-       ad_group.final_url_suffix,
-       ad_group.excluded_parent_asset_field_types,
-       ad_group.effective_target_roas_source,
-       ad_group.effective_target_roas,
-       ad_group.effective_target_cpa_source,
-       ad_group.effective_target_cpa_micros,
-       ad_group.display_custom_bid_dimension,
-       ad_group.cpv_bid_micros,
-       ad_group.cpm_bid_micros,
-       ad_group.cpc_bid_micros,
-       ad_group.campaign,
-       ad_group.base_ad_group,
-       ad_group.ad_rotation_mode
+       SELECT 
+        customer.id,
+        campaign.id,
+        ad_group.url_custom_parameters,
+        ad_group.type,
+        ad_group.tracking_url_template,
+        ad_group.targeting_setting.target_restrictions,
+        ad_group.target_roas,
+        ad_group.target_cpm_micros,
+        ad_group.status,
+        ad_group.target_cpa_micros,
+        ad_group.resource_name,
+        ad_group.percent_cpc_bid_micros,
+        ad_group.name,
+        ad_group.labels,
+        ad_group.id,
+        ad_group.final_url_suffix,
+        ad_group.excluded_parent_asset_field_types,
+        ad_group.effective_target_roas_source,
+        ad_group.effective_target_roas,
+        ad_group.effective_target_cpa_source,
+        ad_group.effective_target_cpa_micros,
+        ad_group.display_custom_bid_dimension,
+        ad_group.cpv_bid_micros,
+        ad_group.cpm_bid_micros,
+        ad_group.cpc_bid_micros,
+        ad_group.campaign,
+        ad_group.base_ad_group,
+        ad_group.ad_rotation_mode
        FROM ad_group
        """
 
     records_jsonpath = "$.results[*]"
     name = "stream_adgroups"
-    primary_keys = ["adGroup__id", "adGroup__campaign", "adGroup__status"]
+    primary_keys = ["adGroup__id"]
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "ad_group.json"
-
 
 class AdGroupsPerformance(ReportsStream):
     """AdGroups Performance"""
@@ -569,7 +1326,64 @@ class AdGroupsPerformance(ReportsStream):
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "adgroups_performance.json"
 
+class AgeReportStream(ReportsStream):
+    """Age Report"""
 
+    @property
+    def gaql(self):
+        return f"""
+        SELECT
+            customer.id,
+            ad_group.id,
+            ad_group_criterion.age_range.type,
+            ad_group_criterion.criterion_id,
+            campaign.id,
+            metrics.clicks,
+            metrics.conversions,
+            metrics.conversions_value,
+            metrics.impressions,
+            metrics.cost_micros,
+            segments.date
+        FROM
+            age_range_view
+        WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_age_report"
+    primary_keys = ["customer__id", "adGroup__id", "adGroupCriterion__ageRange__type", "campaign__id", "segments__date", "adGroupCriterion__criterionId"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "age_report.json"
+
+class AgeReportCustomConversionsStream(ReportsStream):
+    """Age Report Custom Conversions"""
+
+    @property
+    def gaql(self):
+        return f"""
+            select
+                customer.id,
+                ad_group.id,
+                ad_group_criterion.age_range.type,
+                ad_group_criterion.criterion_id,
+                campaign.id,
+                metrics.all_conversions,
+                metrics.all_conversions_value,
+                metrics.conversions,
+                metrics.conversions_value,
+                segments.conversion_action_name,
+                segments.date
+            FROM
+                age_range_view
+            WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_age_report_custom_conversions"
+    primary_keys = ["customer__id", "adGroup__id", "adGroupCriterion__ageRange__type", "campaign__id", "segments__date", "adGroupCriterion__criterionId", "segments__conversionActionName"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "age_report_custom_conversions.json"
+        
 class CampaignPerformance(ReportsStream):
     """Campaign Performance"""
 
@@ -589,7 +1403,6 @@ class CampaignPerformance(ReportsStream):
     ]
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "campaign_performance.json"
-
 
 class CampaignPerformanceByAgeRangeAndDevice(ReportsStream):
     """Campaign Performance By Age Range and Device"""
@@ -613,7 +1426,6 @@ class CampaignPerformanceByAgeRangeAndDevice(ReportsStream):
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "campaign_performance_by_age_range_and_device.json"
 
-
 class CampaignPerformanceByGenderAndDevice(ReportsStream):
     """Campaign Performance By Age Range and Device"""
 
@@ -636,7 +1448,6 @@ class CampaignPerformanceByGenderAndDevice(ReportsStream):
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "campaign_performance_by_gender_and_device.json"
 
-
 class CampaignPerformanceByLocation(ReportsStream):
     """Campaign Performance By Age Range and Device"""
 
@@ -655,7 +1466,6 @@ class CampaignPerformanceByLocation(ReportsStream):
     ]
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "campaign_performance_by_location.json"
-
 
 class GeoPerformance(ReportsStream):
     """Geo performance"""

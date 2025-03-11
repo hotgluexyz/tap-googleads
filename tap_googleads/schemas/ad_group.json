@@ -1,50 +1,104 @@
 {
     "type": "object",
     "properties": {
-        "adGroup__resourceName": {
-            "type": ["string", "null"]
-        },
-        "adGroup__status": {
-            "type": ["string", "null"]
-        },
-        "adGroup__type": {
-            "type": ["string", "null"]
-        },
-        "adGroup__targetingSetting__targetRestrictions": {
-            "type": ["string", "null"]
-        },
-        "adGroup__id": {
-            "type": ["string", "null"]
-        },
-        "adGroup__customer_id": {
-            "type": ["string", "null"]
-        },
-        "adGroup__name": {
-            "type": ["string", "null"]
-        },
-        "adGroup__baseAdGroup": {
-            "type": ["string", "null"]
-        },
-        "adGroup__campaign": {
-            "type": ["string", "null"]
-        },
-        "adGroup__cpcBidMicros": {
-            "type": ["string", "null"]
-        },
-        "adGroup__cpmBidMicros": {
-            "type": ["string", "null"]
-        },
-        "adGroup__targetCpaMicros": {
-            "type": ["string", "null"]
-        },
-        "adGroup__cpvBidMicros": {
-            "type": ["string", "null"]
-        },
-        "adGroup__targetCpmMicros": {
-            "type": ["string", "null"]
-        },
-        "adGroup__effectiveTargetCpaMicros": {
-            "type": ["string", "null"]
+      "customer__id": {
+        "type": ["string", "null"]
+      },
+      "campaign__id": {
+        "type": ["string", "null"]
+      },
+      "adGroup__type": {
+        "type": ["string", "null"]
+      },
+      "adGroup__trackingUrlTemplate": {
+        "type": ["string", "null"]
+      },
+      "adGroup__targetingSettings__targetRestrictions": {
+        "type": ["array", "null"],
+        "items": {
+          "type": "object"
         }
+      },
+      "adGroup__targetRoas": {
+        "type": ["number", "null"],
+        "format": "number-string"
+      },
+      "adGroup__targetCpmMicros": {
+        "type": ["string", "number", "null"],
+        "format": "number-string"
+      },
+      "adGroup__status": {
+        "type": ["string", "null"]
+      },
+      "adGroup__targetCpaMicros": {
+        "type": ["string", "number", "null"],
+        "format": "number-string"
+      },
+      "adGroup__resourceName": {
+        "type": ["string", "null"]
+      },
+      "adGroup__percentCpcBidMicros": {
+        "type": ["string", "number", "null"],
+        "format": "number-string"
+      },
+      "adGroup__name": {
+        "type": ["string", "null"]
+      },
+      "adGroup__labels": {
+        "type": ["array", "null"],
+        "items": {
+          "type": "string"
+        }
+      },
+      "adGroup__id": {
+        "type": ["string", "null"]
+      },
+      "adGroup__finalUrlSuffix": {
+        "type": ["string", "null"]
+      },
+      "adGroup__excludedParentAssetFieldTypes": {
+        "type": ["array", "null"],
+        "items": {
+          "type": "string"
+        }
+      },
+      "adGroup__effectiveTargetRoasSource": {
+        "type": ["string", "null"]
+      },
+      "adGroup__effectiveTargetRoas": {
+        "type": ["number", "null"],
+        "format": "number-string"
+      },
+      "adGroup__effectiveTargetCpaSource": {
+        "type": ["string", "null"]
+      },
+      "adGroup__effectiveTargetCpaMicros": {
+        "type": ["string", "number", "null"],
+        "format": "number-string"
+      },
+      "adGroup__displayCustomBidDimension": {
+        "type": ["string", "null"]
+      },
+      "adGroup__cpvBidMicros": {
+        "type": ["string", "number", "null"],
+        "format": "number-string"
+      },
+      "adGroup__cpmBidMicros": {
+        "type": ["string", "number", "null"],
+        "format": "number-string"
+      },
+      "adGroup__cpcBidMicros": {
+        "type": ["string", "number", "null"],
+        "format": "number-string"
+      },
+      "adGroup__campaign": {
+        "type": ["string", "null"]
+      },
+      "adGroup__baseAdGroup": {
+        "type": ["string", "null"]
+      },
+      "adGroup__adRotationMode": {
+        "type": ["string", "null"]
+      }
     }
-}
+  }

@@ -1,0 +1,72 @@
+{
+    "type": "object",
+    "properties": {
+      "customer__id": {
+        "type": ["string", "null"]
+      },
+      "adGroup__id": {
+        "type": ["string", "null"]
+      },
+      "adGroupAd__ad__id": {
+        "type": ["string", "null"]
+      },
+      "campaign__id": {
+        "type": ["string", "null"]
+      },
+      "metrics__activeViewImpressions": {
+        "type": ["number", "string", "null"]
+      },
+      "metrics__activeViewMeasurability": {
+        "type": ["number", "string", "null"]
+      },
+      "metrics__activeViewMeasurableCostMicros": {
+        "type": ["number", "string", "null"]
+      },
+      "metrics__activeViewMeasurableImpressions": {
+        "type": ["number", "string", "null"]
+      },
+      "metrics__activeViewViewability": {
+        "type": ["number", "string", "null"]
+      },
+      "metrics__clicks": {
+        "type": ["number", "string", "null"]
+      },
+      "metrics__conversionsValue": {
+        "type": ["number", "string", "null"]
+      },
+      "metrics__conversions": {
+        "type": ["number", "string", "null"]
+      },
+      "metrics__costMicros": {
+        "type": ["number", "string", "null"]
+      },
+      "metrics__impressions": {
+        "type": ["number", "string", "null"]
+      },
+      "metrics__interactionEventTypes": {
+        "type": ["array", "null"],
+        "items": {
+          "type": "string"
+        }
+      },
+      "metrics__interactions": {
+        "type": ["number", "string", "null"]
+      },
+      "metrics__viewThroughConversions": {
+        "type": ["number", "string", "null"]
+      },
+      "segments__adNetworkType": {
+        "type": ["string", "null"]
+      },
+      "segments__device": {
+        "type": ["string", "null"]
+      },
+      "segments__date": {
+        "type": [
+            "string",
+            "null"
+        ],
+        "format": "date"
+    }
+    }
+  } 

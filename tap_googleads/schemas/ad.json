@@ -1,0 +1,50 @@
+{
+    "type": "object",
+    "properties": {
+        "customer__id": {
+            "type": ["string", "null"]
+        },
+        "adGroup__id": {
+            "type": ["string", "null"]
+        },
+        "adGroupAd__ad__id": {
+            "type": ["string", "null"]
+        },
+        "adGroupAd__ad__displayUrl": {
+            "type": ["string", "null"]
+        },
+        "adGroupAd__ad__finalAppUrls": {
+            "type": ["array", "null"],
+            "items": {
+                "type": ["string", "null"]
+            }
+        },
+        "adGroupAd__ad__finalMobileUrls": {
+            "type": ["array", "null"],
+            "items": {
+                "type": ["string", "null"]
+            }
+        },
+        "adGroupAd__ad__finalUrlSuffix": {
+            "type": ["string", "null"]
+        },
+        "adGroupAd__ad__finalUrls": {
+            "type": ["array", "null"],
+            "items": {
+                "type": ["string", "null"]
+            }
+        },
+        "adGroupAd__ad__name": {
+            "type": ["string", "null"]
+        },
+        "adGroupAd__status": {
+            "type": ["string", "null"]
+        },
+        "adGroupAd__ad__trackingUrlTemplate": {
+            "type": ["string", "null"]
+        },
+        "adGroupAd__ad__type": {
+            "type": ["string", "null"]
+        }
+    }
+}

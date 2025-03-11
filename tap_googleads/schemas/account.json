@@ -1,143 +1,49 @@
 {
     "type": "object",
     "properties": {
-        "customer__id": {
-            "type": [
-                "string",
-                "null"
-            ]
-        },
-        "campaign__resourceName": {
-            "type": [
-                "string",
-                "null"
-            ]
-        },
-        "campaign__name": {
-            "type": [
-                "string",
-                "null"
-            ]
-        },
-        "campaign__id": {
-            "type": [
-                "string",
-                "null"
-            ]
-        },
-        "campaign__adServingOptimizationStatus": {
-            "type": [
-                "string",
-                "null"
-            ]
-        },
-        "campaign__advertisingChannelType": {
-            "type": [
-                "string",
-                "null"
-            ]
-        },
-        "campaign__advertisingChannelSubType": {
-            "type": [
-                "string",
-                "null"
-            ]
-        },
-        "campaign__baseCampaign": {
-            "type": [
-                "string",
-                "null"
-            ]
-        },
-        "campaign__endDate": {
-            "type": [
-                "string",
-                "null"
-            ]
-        },
-        "campaign__experimentType": {
-            "type": [
-                "string",
-                "null"
-            ]
-        },
-        "campaign__finalUrlSuffix": {
-            "type": [
-                "string",
-                "null"
-            ]
-        },
-        "campaign__frequencyCaps": {
-            "type": [
-                "string",
-                "null"
-            ]
-        },
-        "campaign__optimizationScore": {
-            "type": [
-                "number",
-                "null"
-            ]
-        },
-        "campaign__paymentMode": {
-            "type": [
-                "string",
-                "null"
-            ]
-        },
-        "campaign__servingStatus": {
-            "type": [
-                "string",
-                "null"
-            ]
-        },
-        "campaign__startDate": {
-            "type": [
-                "string",
-                "null"
-            ]
-        },
-        "campaign__status": {
-            "type": [
-                "string",
-                "null"
-            ]
-        },
-        "campaign__trackingUrlTemplate": {
-            "type": [
-                "string",
-                "null"
-            ]
-        },
-        "campaign__vanityPharma__vanityPharmaDisplayUrlMode": {
-            "type": [
-                "string",
-                "null"
-            ]
-        },
-        "campaign__vanityPharma__vanityPharmaText": {
-            "type": [
-                "string",
-                "null"
-            ]
-        },
-        "campaign__videoBrandSafetySuitability": {
-            "type": [
-                "string",
-                "null"
-            ]
-        },
-        "campaign__labels": {
-            "type": [
-                "string",
-                "null"
-            ]
-        },
-        "segments__date": {
-            "type": [
-                "string",
-                "null"
-            ]
+      "customer__id": {
+        "type": ["string", "null"]
+      },
+      "customer__autoTaggingEnabled": {
+        "type": ["boolean", "null"]
+      },
+      "customer__currencyCode": {
+        "type": ["string", "null"]
+      },
+      "customer__descriptiveName": {
+        "type": ["string", "null"]
+      },
+      "customer__finalUrlSuffix": {
+        "type": ["string", "null"]
+      },
+      "customer__manager": {
+        "type": ["boolean", "null"]
+      },
+      "customer__optimizationScore": {
+        "type": ["number", "null"],
+        "format": "number-string"
+      },
+      "customer__payPerConversionEligibilityFailureReasons": {
+        "type": ["array", "null"],
+        "items": {
+          "type": "string"
         }
+      },
+      "customer__testAccount": {
+        "type": ["boolean", "null"]
+      },
+      "customer__timeZone": {
+        "type": ["string", "null"]
+      },
+      "customer__trackingUrlTemplate": {
+        "type": ["string", "null"]
+      },
+      "customer__status": {
+        "type": ["string", "null"]
+      },
+      "segments__date": {
+        "type": ["string", "null"],
+        "format": "date"
+      }
     }
-}
+  }
