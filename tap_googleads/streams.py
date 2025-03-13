@@ -317,6 +317,42 @@ class AccountsStream(ReportsStream):
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "account.json"
 
+class AdPerformanceReportConversionStats(GoogleAdsStream):
+    """Ad Performance Report Conversion Stats stream."""
+    
+    @property
+    def gaql(self) -> str:
+        return f"""
+        SELECT 
+            customer.id,
+            ad_group_ad.ad.id,
+            ad_group.id,
+            campaign.id,
+            metrics.all_conversions,
+            metrics.all_conversions_value,
+            metrics.conversions,
+            metrics.conversions_value,
+            segments.conversion_action_name,
+            segments.device,
+            segments.date
+        FROM ad_group_ad
+        WHERE segments.date >= {self.start_date}
+        AND segments.date <= {self.end_date}
+        """
+
+    name = "stream_ad_performance_report_conversion_stats"
+    records_jsonpath = "$.results[*]"
+    primary_keys = [
+        "customer__id",
+        "ad_group_ad__ad__id",
+        "ad_group__id",  # Added ad_group_id as primary key
+        "segments__date",
+        "segments__conversion_action_name",
+        "segments__device"
+    ]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "ad_performance_report_conversion_stats.json"
+
 class CampaignsStream(ReportsStream):
     """Define custom stream."""
 
