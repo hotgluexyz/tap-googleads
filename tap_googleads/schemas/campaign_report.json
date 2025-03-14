@@ -33,40 +33,33 @@
         },
         "metrics__clicks": {
             "type": [
-                "string",
+                "number",
                 "null"
-            ],
-            "format": "integer"
+            ]
         },
         "metrics__conversions": {
             "type": [
                 "number",
                 "null"
-            ],
-            "format": "number-string"
+            ]
         },
         "metrics__conversionsValue": {
             "type": [
                 "number",
                 "null"
-            ],
-            "format": "number-string"
+            ]
         },
         "metrics__costMicros": {
             "type": [
-                "string",
                 "number",
                 "null"
-            ],
-            "format": "integer"
+            ]
         },
         "metrics__impressions": {
             "type": [
-                "string",
                 "number",
                 "null"
-            ],
-            "format": "number-string"
+            ]
         },
         "metrics__searchBudgetLostAbsoluteTopImpressionShare": {
             "type": [

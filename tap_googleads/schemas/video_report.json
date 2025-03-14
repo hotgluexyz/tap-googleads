@@ -14,56 +14,43 @@
         "type": ["string", "null"]
       },
       "metrics__clicks": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "metrics__conversions": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "metrics__conversionsValue": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "metrics__costMicros": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "metrics__impressions": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "metrics__allConversions": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "metrics__allConversionsValue": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "metrics__videoQuartileP100Rate": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "metrics__videoQuartileP75Rate": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "metrics__videoQuartileP50Rate": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "metrics__videoQuartileP25Rate": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "metrics__videoViewRate": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "metrics__videoViews": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "segments__date": {
         "type": ["string", "null"],

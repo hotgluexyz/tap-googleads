@@ -14,34 +14,34 @@
         "type": ["string", "null"]
       },
       "metrics__activeViewImpressions": {
-        "type": ["number", "string", "null"]
+        "type": ["number", "null"]
       },
       "metrics__activeViewMeasurability": {
-        "type": ["number", "string", "null"]
+        "type": ["number", "null"]
       },
       "metrics__activeViewMeasurableCostMicros": {
-        "type": ["number", "string", "null"]
+        "type": ["number", "null"]
       },
       "metrics__activeViewMeasurableImpressions": {
-        "type": ["number", "string", "null"]
+        "type": ["number", "null"]
       },
       "metrics__activeViewViewability": {
-        "type": ["number", "string", "null"]
+        "type": ["number", "null"]
       },
       "metrics__clicks": {
-        "type": ["number", "string", "null"]
+        "type": ["number", "null"]
       },
       "metrics__conversionsValue": {
-        "type": ["number", "string", "null"]
+        "type": ["number", "null"]
       },
       "metrics__conversions": {
-        "type": ["number", "string", "null"]
+        "type": ["number", "null"]
       },
       "metrics__costMicros": {
-        "type": ["number", "string", "null"]
+        "type": ["number", "null"]
       },
       "metrics__impressions": {
-        "type": ["number", "string", "null"]
+        "type": ["number", "null"]
       },
       "metrics__interactionEventTypes": {
         "type": ["array", "null"],
@@ -50,10 +50,10 @@
         }
       },
       "metrics__interactions": {
-        "type": ["number", "string", "null"]
+        "type": ["number", "null"]
       },
       "metrics__viewThroughConversions": {
-        "type": ["number", "string", "null"]
+        "type": ["number", "null"]
       },
       "segments__adNetworkType": {
         "type": ["string", "null"]

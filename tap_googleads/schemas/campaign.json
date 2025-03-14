@@ -39,8 +39,7 @@
         "type": ["string", "null"]
       },
       "campaign__optimizationScore": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["string", "null"]
       },
       "campaign__paymentMode": {
         "type": ["string", "null"]

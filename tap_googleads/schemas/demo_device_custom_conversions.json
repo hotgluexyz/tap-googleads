@@ -18,24 +18,19 @@
         "type": ["string", "null"]
       },
       "metrics__allConversions": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "metrics__allConversionsValue": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "metrics__conversions": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "metrics__conversionsValue": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "metrics__viewThroughConversions": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       }
     }
   }

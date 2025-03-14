@@ -14,20 +14,16 @@
         "type": ["string", "null"]
       },
       "metrics__conversions": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "metrics__conversionsValue": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "metrics__allConversions": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "metrics__allConversionsValue": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "segments__conversionActionName": {
         "type": ["string", "null"]

@@ -20,26 +20,22 @@
         }
       },
       "adGroup__targetRoas": {
-        "type": ["number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "adGroup__targetCpmMicros": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "adGroup__status": {
         "type": ["string", "null"]
       },
       "adGroup__targetCpaMicros": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "adGroup__resourceName": {
         "type": ["string", "null"]
       },
       "adGroup__percentCpcBidMicros": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "adGroup__name": {
         "type": ["string", "null"]
@@ -66,30 +62,25 @@
         "type": ["string", "null"]
       },
       "adGroup__effectiveTargetRoas": {
-        "type": ["number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "adGroup__effectiveTargetCpaSource": {
         "type": ["string", "null"]
       },
       "adGroup__effectiveTargetCpaMicros": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "adGroup__displayCustomBidDimension": {
         "type": ["string", "null"]
       },
       "adGroup__cpvBidMicros": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "adGroup__cpmBidMicros": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "adGroup__cpcBidMicros": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "adGroup__campaign": {
         "type": ["string", "null"]

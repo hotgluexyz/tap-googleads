@@ -1,0 +1,33 @@
+{
+  "type": "object",
+  "properties": {
+      "customer__id": {
+          "type": ["string", "null"]
+      },
+      "campaign__id": {
+          "type": ["string", "null"]
+      },
+      "geographicView__countryCriterionId": {
+          "type": ["string", "null"]
+      },
+      "metrics__clicks": {
+          "type": ["number", "null"]
+      },
+      "metrics__conversions": {
+          "type": ["number", "null"]
+      },
+      "metrics__conversionsValue": {
+          "type": ["number", "null"]
+      },
+      "metrics__impressions": {
+          "type": ["number", "null"]
+      },
+      "metrics__costMicros": {
+          "type": ["number", "null"]
+      },
+      "segments__date": {
+          "type": ["string", "null"],
+          "format": "date"
+      }
+  }
+}

@@ -11,24 +11,19 @@
         "type": ["string", "null"]
       },
       "metrics__clicks": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "metrics__conversions": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "metrics__conversionsValue": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "metrics__costMicros": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "metrics__impressions": {
-        "type": ["string", "number", "null"],
-        "format": "number-string"
+        "type": ["number", "null"]
       },
       "searchTermView__searchTerm": {
         "type": ["string", "null"]

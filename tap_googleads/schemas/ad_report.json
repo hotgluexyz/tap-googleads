@@ -113,28 +113,28 @@
             "type": ["string", "null"]
         },
         "metrics__allConversions": {
-            "type": ["number", "null", "string"]
+            "type": ["number", "null"]
         },
         "metrics__allConversionsValue": {
-            "type": ["number", "null", "string"]
+            "type": ["number", "null"]
         },
         "metrics__clicks": {
-            "type": ["string", "null", "number"]
+            "type": ["number", "null"]
         },
         "metrics__conversions": {
-            "type": ["number", "null", "string"]
+            "type": ["number", "null"]
         },
         "metrics__conversionsValue": {
-            "type": ["number", "null", "string"]
+            "type": ["number", "null"]
         },
         "metrics__costMicros": {
-            "type": ["string", "null", "number"]
+            "type": ["number", "null"]
         },
         "metrics__impressions": {
-            "type": ["string", "null", "number"]
+            "type": ["number", "null"]
         },
         "metrics__viewThroughConversions": {
-            "type": ["number", "null", "string"]
+            "type": ["number", "null"]
         },
         "segments__date": {
             "type": [

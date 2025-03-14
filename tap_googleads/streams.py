@@ -520,6 +520,60 @@ class CityReportCustomConversionsStream(ReportsStream):
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "city_report_custom_conversions.json"
 
+class CountryReportStream(ReportsStream):
+    """Define country report stream."""
+
+    @property
+    def gaql(self):
+        return f"""
+            select
+                customer.id,
+                campaign.id,
+                geographic_view.country_criterion_id,
+                metrics.clicks,
+                metrics.conversions,
+                metrics.conversions_value,
+                metrics.impressions,
+                metrics.cost_micros,
+                segments.date
+            from
+                geographic_view
+            WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_country_report"
+    primary_keys = ["customer__id", "campaign__id", "geographicView__countryCriterionId", "segments__date"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "country_report.json"
+
+class CountryReportCustomConversionsStream(ReportsStream):
+    """Define country report custom conversions stream."""
+
+    @property
+    def gaql(self):
+        return f"""
+            select
+                customer.id,
+                campaign.id,
+                geographic_view.country_criterion_id,
+                metrics.all_conversions,
+                metrics.all_conversions_value,
+                metrics.conversions,
+                metrics.conversions_value,
+                segments.conversion_action_name,
+                segments.date
+            from
+                geographic_view
+            WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_country_report_custom_conversions"
+    primary_keys = ["customer__id", "campaign__id", "geographicView__countryCriterionId", "segments__conversionActionName", "segments__date"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "country_report_custom_conversions.json"
+
 class DemoDeviceStream(ReportsStream):
     """Define custom stream for device-level campaign reporting."""
 
