@@ -34,8 +34,8 @@ class AccessibleCustomers(GoogleAdsStream):
     def get_child_context(
         self,
         record: Record,
-        context: Context | None,
-    ) -> Context | None:
+        context,
+    ):
         """Generate child contexts.
 
         Args:
@@ -46,10 +46,6 @@ class AccessibleCustomers(GoogleAdsStream):
             A child context for each child stream.
 
         """
-        # NOTE: the line below ensures we only get data for selected customers
-        if self.customer_ids:
-            return {"customer_ids": self.customer_ids}
-
         customer_ids = []
         for customer in record.get("resourceNames", []):
             customer_id = customer.split("/")[1]
@@ -64,9 +60,10 @@ class CustomerHierarchyStream(GoogleAdsStream):
     Inspiration from Google here
     https://developers.google.com/google-ads/api/docs/account-management/get-account-hierarchy.
 
-    This stream is stictly to be the Parent Stream, to let all Child Streams
-    know when to query the down stream apps.
-
+    This query retrieves all 1-degree subaccounts given a manager account's subaccounts. Subaccounts can be either managers or clients.
+    
+    This stream spawns child streams only for customers that are active clients (not managers).
+    If a `customer_ids` config is provided, only the customers in the list (or their children) will be synced.
     """
 
     @property
@@ -113,33 +110,6 @@ class CustomerHierarchyStream(GoogleAdsStream):
 
         super().validate_response(response)
 
-    def generate_child_contexts(self, record, context):
-        customer_ids = self.customer_ids
-
-        if customer_ids is None:
-            customer = record["customerClient"]
-
-            if customer["manager"]:
-                self.logger.warning(
-                    "%s is a manager, skipping",
-                    customer["clientCustomer"],
-                )
-                return
-
-            if customer["status"] != "ENABLED":
-                self.logger.warning(
-                    "%s is not enabled, skipping",
-                    customer["clientCustomer"],
-                )
-                return
-
-            customer_ids = {customer["id"]}
-
-        # sync only customers we haven't seen
-        customer_ids = set(customer_ids) - self.seen_customer_ids
-        yield from ({"customer_id": customer_id} for customer_id in customer_ids)
-
-        self.seen_customer_ids.update(customer_ids)
 
     def get_records(self, context):
         for customer_id in context.get("customer_ids", []):
@@ -154,13 +124,36 @@ class CustomerHierarchyStream(GoogleAdsStream):
         row = row["customerClient"]
         row["customer_id"] = _sanitise_customer_id(row["id"])
         return row
+    
+    def _sync_children(self, child_context: dict | None) -> None:
+        if child_context:
+            self.seen_customer_ids.add(child_context.get("customer_id"))
+            super()._sync_children({"customer_id": child_context.get("customer_id")})
+
+    def get_customer_family_line(self, resource_name) -> list:
+        # resource name looks like 'customers/8435753557/customerClients/8105937676'
+        family_line = [x for x in resource_name.split('/') if not 'customer' in x]
+        return family_line
+
+    def get_child_context(self, record: Record, context):
+        customer_id = record.get("customer_id")
+        is_active_client = record.get("manager") == False and record.get("status") == "ENABLED"
+        already_synced = customer_id in self.seen_customer_ids
+
+        family_line = self.get_customer_family_line(record.get("resourceName"))
+
+        if is_active_client and not already_synced:
+            if not self.customer_ids or len(set(self.customer_ids).intersection(set(family_line))) > 0:
+                return {"customer_id": record.get("id"), "is_active_client": is_active_client}
+        
+        return None
 
 class ReportsStream(GoogleAdsStream):
     parent_stream_type = CustomerHierarchyStream
 
     def get_records(self, context):
         records =  super().get_records(context)
-        customer_id = self.config.get('customer_id')
+        customer_id = context.get("customer_id")
         if customer_id:
             for record in records:
                 record["customer_id"] = customer_id
