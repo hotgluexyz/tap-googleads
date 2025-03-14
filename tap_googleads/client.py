@@ -40,7 +40,8 @@ class GoogleAdsStream(RESTStream):
         if self.config.get("customer_id"):
             self._config["customer_ids"] = [_sanitise_customer_id(self.config.get("customer_id"))]
         elif self.config.get("customer_ids"):
-            self._config["customer_ids"] = list(map(_sanitise_customer_id, self.config.get("customer_ids")))
+            raw_customer_ids = self.config.get("customer_ids").split(",")
+            self._config["customer_ids"] = list(map(_sanitise_customer_id, raw_customer_ids))
 
     def response_error_message(self, response: requests.Response) -> str:
         """Build error message for invalid http statuses.
@@ -220,4 +221,4 @@ class GoogleAdsStream(RESTStream):
                 )
 
 def _sanitise_customer_id(customer_id: str):
-    return customer_id.replace("-", "")
+    return customer_id.replace("-", "").strip()
