@@ -135,7 +135,7 @@ class CustomerHierarchyStream(GoogleAdsStream):
         family_line = [x for x in resource_name.split('/') if not 'customer' in x]
         return family_line
 
-    def get_child_context(self, record: Record, context: Context | None) -> Context | None:
+    def get_child_context(self, record: Record, context):
         customer_id = record.get("customer_id")
         is_active_client = record.get("manager") == False and record.get("status") == "ENABLED"
         already_synced = customer_id in self.seen_customer_ids
