@@ -86,8 +86,8 @@ class TapGoogleAds(Tap):
         ),
         th.Property(
             "customer_ids",
-            th.ArrayType(CUSTOMER_ID_TYPE),
-            description="Get data for the provided customers only, rather than all accessible customers. Takes precedence over `customer_id`.",
+            CUSTOMER_ID_TYPE,
+            description="Comma seperated string. Get data for the provided customers only, rather than all accessible customers. Takes precedence over `customer_id`.",
         ),
         th.Property(
             "customer_id",
