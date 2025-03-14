@@ -34,8 +34,8 @@ class AccessibleCustomers(GoogleAdsStream):
     def get_child_context(
         self,
         record: Record,
-        context: Context | None,
-    ) -> Context | None:
+        context,
+    ):
         """Generate child contexts.
 
         Args:
