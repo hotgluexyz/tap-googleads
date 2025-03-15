@@ -317,7 +317,7 @@ class AccountsStream(ReportsStream):
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "account.json"
 
-class AdPerformanceReportConversionStats(GoogleAdsStream):
+class AdPerformanceReportConversionStats(ReportsStream):
     """Ad Performance Report Conversion Stats stream."""
     
     @property
