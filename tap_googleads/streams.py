@@ -1193,7 +1193,7 @@ class KeywordReportsStream(ReportsStream):
 
     records_jsonpath = "$.results[*]"
     name = "stream_keyword_report"
-    primary_keys = ["customer__id", "ad_group__id", "ad_group_criterion__criterion_id", "campaign__id", "segments__date"]
+    primary_keys = ["customer__id", "adGroup__id", "adGroupCriterion__criterionId", "campaign__id", "segments__date"]
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "keyword_report.json"
 
@@ -1223,13 +1223,12 @@ class KeywordReportCustomConversionsStream(ReportsStream):
 
     records_jsonpath = "$.results[*]"
     name = "stream_keyword_report_custom_conversions"
-    primary_keys = ["customer__id", "ad_group__id", "ad_group_criterion__criterion_id", "campaign__id", "segments__conversion_action_name", "segments__date"]
+    primary_keys = ["customer__id", "adGroup__id", "adGroupCriterion__criterionId", "campaign__id", "segments__conversionActionName", "segments__date"]
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "keyword_report_custom_conversions.json"
 
 class AdStream(ReportsStream):
     """Stream for basic ad information from Google Ads."""
-    
     
     @property
     def gaql(self):
