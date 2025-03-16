@@ -530,6 +530,7 @@ class CountryReportStream(ReportsStream):
                 customer.id,
                 campaign.id,
                 geographic_view.country_criterion_id,
+                geographic_view.location_type,
                 metrics.clicks,
                 metrics.conversions,
                 metrics.conversions_value,
@@ -543,7 +544,7 @@ class CountryReportStream(ReportsStream):
 
     records_jsonpath = "$.results[*]"
     name = "stream_country_report"
-    primary_keys = ["customer__id", "campaign__id", "geographicView__countryCriterionId", "segments__date"]
+    primary_keys = ["customer__id", "campaign__id", "geographicView__countryCriterionId", "segments__date", "geographicView__locationType"]
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "country_report.json"
 
@@ -557,6 +558,7 @@ class CountryReportCustomConversionsStream(ReportsStream):
                 customer.id,
                 campaign.id,
                 geographic_view.country_criterion_id,
+                geographic_view.location_type,
                 metrics.all_conversions,
                 metrics.all_conversions_value,
                 metrics.conversions,
@@ -570,7 +572,7 @@ class CountryReportCustomConversionsStream(ReportsStream):
 
     records_jsonpath = "$.results[*]"
     name = "stream_country_report_custom_conversions"
-    primary_keys = ["customer__id", "campaign__id", "geographicView__countryCriterionId", "segments__conversionActionName", "segments__date"]
+    primary_keys = ["customer__id", "campaign__id", "geographicView__countryCriterionId", "segments__conversionActionName", "segments__date", "geographicView__locationType"]
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "country_report_custom_conversions.json"
 

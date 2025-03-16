@@ -10,6 +10,10 @@
       "geographicView__countryCriterionId": {
           "type": ["string", "null"]
       },
+      "geographicView__locationType": {
+        "type": ["string", "null"],
+        "description": "Type of location targeting (AREA_OF_INTEREST or LOCATION_OF_PRESENCE)"
+      },
       "metrics__allConversions": {
           "type": ["number", "null"]
       },
