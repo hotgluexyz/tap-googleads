@@ -408,6 +408,7 @@ class CampaignReportsStream(ReportsStream):
                 metrics.conversions_value,
                 metrics.cost_micros,
                 metrics.impressions,
+                metrics.phone_calls,
                 metrics.search_budget_lost_absolute_top_impression_share,
                 metrics.search_budget_lost_impression_share,
                 metrics.search_budget_lost_top_impression_share,
