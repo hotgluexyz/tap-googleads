@@ -486,7 +486,7 @@ class CityReportStream(ReportsStream):
 
     records_jsonpath = "$.results[*]"
     name = "stream_city_report"
-    primary_keys = ["customer__id", "campaign__id", "adGroup__id", "segments__date", "segments__geoTargetCity"]
+    primary_keys = ["customer__id", "campaign__id", "adGroup__id", "segments__date", "segments__geoTargetCity", "geographicView__locationType"]
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "city_report.json"
 
@@ -517,7 +517,7 @@ class CityReportCustomConversionsStream(ReportsStream):
 
     records_jsonpath = "$.results[*]"
     name = "stream_city_report_custom_conversions"
-    primary_keys = ["customer__id", "campaign__id", "adGroup__id", "segments__date", "segments__conversionActionName", "segments__geoTargetCity"]
+    primary_keys = ["customer__id", "campaign__id", "adGroup__id", "segments__date", "segments__conversionActionName", "segments__geoTargetCity", "geographicView__locationType"]
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "city_report_custom_conversions.json"
 
