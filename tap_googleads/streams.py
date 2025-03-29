@@ -913,6 +913,72 @@ class PostalCodeReportCustomConversionsStream(ReportsStream):
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "postal_code_report_custom_conversions.json"
 
+class PostalCodeReportCampaignLevelStream(ReportsStream):
+    """Define custom stream for campaign-level postal code reporting."""
+
+    @property
+    def gaql(self):
+        return f"""
+        select
+          customer.id,
+          campaign.id,
+          geographic_view.resource_name,
+          geographic_view.country_criterion_id,
+          geographic_view.location_type,
+          metrics.clicks,
+          metrics.conversions,
+          metrics.conversions_value,
+          metrics.cost_micros,
+          metrics.impressions,
+          metrics.all_conversions,
+          metrics.all_conversions_value,
+          segments.geo_target_city,
+          segments.geo_target_postal_code,
+          segments.geo_target_state,
+          segments.date
+        from
+          geographic_view
+        WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_postal_code_report_campaign_level"
+    primary_keys = ["customer__id", "campaign__id", "geographicView__countryCriterionId", "segments__date", "geographicView__locationType", "segments__geoTargetCity", "segments__geoTargetPostalCode", "segments__geoTargetState"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "postal_code_report_campaign_level.json"
+
+class PostalCodeReportCampaignLevelCustomConversionsStream(ReportsStream):
+    """Define custom stream for campaign-level postal code conversion reporting."""
+
+    @property
+    def gaql(self):
+        return f"""
+        select
+          customer.id,
+          campaign.id,
+          geographic_view.resource_name,
+          geographic_view.country_criterion_id,
+          geographic_view.location_type,
+          metrics.conversions,
+          metrics.conversions_value,
+          metrics.all_conversions,
+          metrics.all_conversions_value,
+          segments.geo_target_city,
+          segments.geo_target_postal_code,
+          segments.geo_target_state,
+          segments.conversion_action_name,
+          segments.date
+        from
+          geographic_view
+        WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+        """
+
+    records_jsonpath = "$.results[*]"
+    name = "stream_postal_code_report_campaign_level_custom_conversions"
+    primary_keys = ["customer__id", "campaign__id", "geographicView__countryCriterionId", "segments__date", "segments__conversionActionName", "geographicView__locationType", "segments__geoTargetCity", "segments__geoTargetPostalCode", "segments__geoTargetState"]
+    replication_key = None
+    schema_filepath = SCHEMAS_DIR / "postal_code_report_campaign_level_custom_conversions.json"
+
 class RegionReportStream(ReportsStream):
     """Define custom stream for region-level reporting."""
 
