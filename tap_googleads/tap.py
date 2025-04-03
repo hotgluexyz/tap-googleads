@@ -124,7 +124,7 @@ class TapGoogleAds(Tap):
         secret=True,
     )
     _end_date = datetime.now(timezone.utc).date()
-    _start_date = _end_date - timedelta(days=90)
+    _start_date = _end_date - timedelta(days=30)
 
     config_jsonschema = th.PropertiesList(
         th.Property(
@@ -168,9 +168,15 @@ class TapGoogleAds(Tap):
             description="Get data for the provided customer only, rather than all accessible customers. Superseeded by `customer_ids`.",
         ),
         th.Property(
+            "lookback_days",
+            th.IntegerType,
+            description="Number of days to look back when no start_date is provided. Defaults to 30.",
+            default=30,
+        ),
+        th.Property(
             "start_date",
             th.DateType,
-            description="ISO start date for all of the streams that use date-based filtering. Defaults to 90 days before the current day.",
+            description="ISO start date for all of the streams that use date-based filtering. If not provided, defaults to lookback_days before the current day.",
             default=_start_date.isoformat(),
         ),
         th.Property(
@@ -186,6 +192,12 @@ class TapGoogleAds(Tap):
             default=False,
         ),
     ).to_dict()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if "start_date" not in self.config:
+            lookback_days = self.config.get("lookback_days", 30)
+            self.config["start_date"] = (datetime.now(timezone.utc).date() - timedelta(days=lookback_days)).isoformat()
 
     def setup_mapper(self):
         self._config.setdefault("flattening_enabled", True)
