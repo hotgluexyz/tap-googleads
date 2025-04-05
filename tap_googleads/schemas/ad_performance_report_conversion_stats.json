@@ -4,29 +4,29 @@
         "customer__id": {
             "type": ["string", "null"]
         },
-        "ad_group_ad__ad__id": {
+        "adGroupAd__ad__id": {
             "type": ["string", "null"]
         },
-        "ad_group__id": {
+        "adGroup__id": {
             "type": ["string", "null"]
         },
         "campaign__id": {
             "type": ["string", "null"]
         },
-        "metrics__all_conversions": {
+        "metrics__allConversions": {
             "type": ["number", "null"],
             "format": "number"
         },
-        "metrics__all_conversions_value": {
+        "metrics__allConversionsValue": {
             "type": ["number", "null"]
         },
         "metrics__conversions": {
             "type": ["number", "null"]
         },
-        "metrics__conversions_value": {
+        "metrics__conversionsValue": {
             "type": ["number", "null"]
         },
-        "segments__conversion_action_name": {
+        "segments__conversionActionName": {
             "type": ["string", "null"]
         },
         "segments__device": {
