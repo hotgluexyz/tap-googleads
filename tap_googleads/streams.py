@@ -207,18 +207,20 @@ class ReportsStream(GoogleAdsStream):
 class GeotargetsStream(ReportsStream):
     """Geotargets, worldwide, constant across all customers"""
 
-    gaql = """
-    SELECT
-        geo_target_constant.canonical_name,
-        geo_target_constant.country_code,
-        geo_target_constant.id,
-        geo_target_constant.name,
-        geo_target_constant.status,
-        geo_target_constant.target_type
-    FROM geo_target_constant
-    """
+    def gaql(self, context=None): 
+        return """
+            SELECT
+                geo_target_constant.canonical_name,
+                geo_target_constant.country_code,
+                geo_target_constant.id,
+                geo_target_constant.name,
+                geo_target_constant.status,
+                geo_target_constant.target_type
+            FROM geo_target_constant
+            """
     records_jsonpath = "$.results[*]"
     name = "stream_geo_target_constant"
+    replication_key = None
     primary_keys = ["geoTargetConstant__id"]
     schema_filepath = SCHEMAS_DIR / "geo_target_constant.json"
 
@@ -340,6 +342,7 @@ class AccountsStream(ReportsStream):
 
     records_jsonpath = "$.results[*]"
     name = "stream_account"
+    replication_key = None
     primary_keys = ["customer__id"]
     schema_filepath = SCHEMAS_DIR / "account.json"
 
@@ -752,7 +755,7 @@ class ExpandedTextAdStream(ReportsStream):
     records_jsonpath = "$.results[*]"
     name = "stream_expanded_text_ad"
     primary_keys = ["customer__id", "campaign__id", "adGroup__id", "adGroupAd__ad__id"]
-    replication_key = "segments__date"
+    replication_key = None
     schema_filepath = SCHEMAS_DIR / "expanded_text_ad.json"
 
 class GenderReportStream(ReportsStream):
