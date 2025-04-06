@@ -195,7 +195,7 @@ class TapGoogleAds(Tap):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        configured_start_date = self.config.get("start_date") # string2024-01-01T00:00:00Z
+        configured_start_date = self.config.get("start_date")
         if configured_start_date:
             configured_start_date = datetime.strptime(configured_start_date, "%Y-%m-%dT%H:%M:%SZ").date()
 
