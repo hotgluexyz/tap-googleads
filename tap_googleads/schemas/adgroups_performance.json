@@ -24,6 +24,10 @@
         },
         "metrics__impressions": {
             "type": ["string", "null"]
+        },
+        "segments__date": {
+            "type": ["string", "null"],
+            "format": "date"
         }
     }
 }

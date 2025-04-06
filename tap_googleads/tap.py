@@ -195,9 +195,14 @@ class TapGoogleAds(Tap):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if "start_date" not in self.config:
-            lookback_days = self.config.get("lookback_days", 30)
-            self.config["start_date"] = (datetime.now(timezone.utc).date() - timedelta(days=lookback_days)).isoformat()
+        configured_start_date = self.config.get("start_date") # string2024-01-01T00:00:00Z
+        if configured_start_date:
+            configured_start_date = datetime.strptime(configured_start_date, "%Y-%m-%dT%H:%M:%SZ").date()
+
+        lookback_days = self.config.get("lookback_days", 30)
+        
+        if not configured_start_date or configured_start_date < (datetime.now(timezone.utc).date() - timedelta(days=lookback_days)):
+            self._config["start_date"] = (datetime.now(timezone.utc).date() - timedelta(days=lookback_days)).isoformat()
 
     def setup_mapper(self):
         self._config.setdefault("flattening_enabled", True)

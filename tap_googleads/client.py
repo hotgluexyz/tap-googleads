@@ -135,9 +135,10 @@ class GoogleAdsStream(RESTStream):
         params: dict = {}
         if next_page_token:
             params["pageToken"] = next_page_token
-        if self.replication_key:
-            params["sort"] = "asc"
-            params["order_by"] = self.replication_key
+
+        if self.gaql:
+            params["query"] = self.gaql(context)
+
         return params
 
     def get_records(self, context):
@@ -146,22 +147,19 @@ class GoogleAdsStream(RESTStream):
         except ResumableAPIError as e:
             self.logger.warning(e)
 
-    @property
     def gaql(self):
         raise NotImplementedError
 
     @property
     def path(self) -> str:
-        # Paramas
-        path = "/customers/{customer_id}/googleAds:search?query="
-        return path + self.gaql
+        path = "/customers/{customer_id}/googleAds:search"
+        return path
 
-    @cached_property
-    def start_date(self):
-        try:
-            return datetime.fromisoformat(self.config["start_date"]).strftime(r"'%Y-%m-%d'")
-        except Exception:
-            return datetime.strptime(self.config["start_date"], "%Y-%m-%dT%H:%M:%SZ").strftime(r"'%Y-%m-%d'")
+    
+    def start_date(self, context=None):
+        start_value = self.get_starting_replication_key_value(context)
+        start_date =  f"'{parse(start_value).date()}'"
+        return start_date
 
     @cached_property
     def end_date(self):
