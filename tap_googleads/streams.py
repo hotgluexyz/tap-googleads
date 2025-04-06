@@ -1087,7 +1087,7 @@ class SearchQueryReportStream(ReportsStream):
 
     records_jsonpath = "$.results[*]"
     name = "stream_search_query_report"
-    primary_keys = ["customer__id", "campaign__id", "adGroup__id", "searchTermView__searchTerm", "segments__date", "segments__keyword__adGroupCriterion", "segments__keyword__info__matchType", "segments__keyword__info__text", "segments__searchTermMatchType"]
+    primary_keys = ["customer__id", "campaign__id", "adGroup__id", "searchTermView__searchTerm", "segments__date", "segments__keyword__adGroupCriterion", "segments__keyword__info", "segments__searchTermMatchType"]
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "search_query_report.json"
 
