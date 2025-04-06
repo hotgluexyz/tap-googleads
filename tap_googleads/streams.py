@@ -151,6 +151,8 @@ class CustomerHierarchyStream(GoogleAdsStream):
 
 class ReportsStream(GoogleAdsStream):
     parent_stream_type = CustomerHierarchyStream
+    replication_key = "segments__date"
+
 
     def get_records(self, context):
         records =  super().get_records(context)
@@ -408,7 +410,7 @@ class AdGroupsPerformance(ReportsStream):
     records_jsonpath = "$.results[*]"
     name = "stream_adgroupsperformance"
     primary_keys = ["campaign__id", "adGroup__id"]
-    replication_key = "segments__date"
+    
     schema_filepath = SCHEMAS_DIR / "adgroups_performance.json"
 
 
@@ -429,7 +431,7 @@ class CampaignPerformance(ReportsStream):
         "segments__date",
         "segments__device",
     ]
-    replication_key = "segments__date"
+    
     schema_filepath = SCHEMAS_DIR / "campaign_performance.json"
 
 
@@ -452,7 +454,7 @@ class CampaignPerformanceByAgeRangeAndDevice(ReportsStream):
         "campaign__status",
         "segments__device",
     ]
-    replication_key = "segments__date"
+    
     schema_filepath = SCHEMAS_DIR / "campaign_performance_by_age_range_and_device.json"
 
 
@@ -475,7 +477,7 @@ class CampaignPerformanceByGenderAndDevice(ReportsStream):
         "campaign__status",
         "segments__device",
     ]
-    replication_key = "segments__date"
+    
     schema_filepath = SCHEMAS_DIR / "campaign_performance_by_gender_and_device.json"
 
 
@@ -495,7 +497,7 @@ class CampaignPerformanceByLocation(ReportsStream):
         "campaign__name",
         "segments__date",
     ]
-    replication_key = "segments__date"
+    
     schema_filepath = SCHEMAS_DIR / "campaign_performance_by_location.json"
 
 
@@ -529,5 +531,5 @@ class GeoPerformance(ReportsStream):
         "campaign__status",
         "segments__date"
     ]
-    replication_key = "segments__date"
+    
     schema_filepath = SCHEMAS_DIR / "geo_performance.json"
