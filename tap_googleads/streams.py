@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, Iterable
 
 from singer_sdk import typing as th  # JSON Schema typing helpers
-
+from singer_sdk.helpers._state import increment_state
 from tap_googleads.client import GoogleAdsStream, ResumableAPIError, _sanitise_customer_id
 from pendulum import parse
 
@@ -24,6 +24,7 @@ class AccessibleCustomers(GoogleAdsStream):
 
     rest_method = "GET"
     path = "/customers:listAccessibleCustomers"
+    gaql = None
     name = "stream_accessible_customers"
     primary_keys = ["resourceNames"]
     replication_key = None
@@ -66,8 +67,8 @@ class CustomerHierarchyStream(GoogleAdsStream):
     If a `customer_ids` config is provided, only the customers in the list (or their children) will be synced.
     """
 
-    @property
-    def gaql(self):
+
+    def gaql(self, context=None):
         return """
 	SELECT
           customer_client.client_customer,
@@ -159,16 +160,58 @@ class ReportsStream(GoogleAdsStream):
                 record["customer_id"] = customer_id
                 yield record
 
+    def _flatten_record(self, record, parent_prefix=""):
+        flattened_record = {}
+        for key, value in record.items():
+            if isinstance(value, dict):
+                flattened_record.update(self._flatten_record(value, parent_prefix=f"{parent_prefix}{key}__"))
+            else:
+                flattened_record[f"{parent_prefix}{key}"] = value
+        return flattened_record
+
+    def _increment_stream_state(
+        self,
+        latest_record: dict[str, t.Any],
+        *,
+        context: dict | None = None,
+    ) -> None:
+        # This also creates a state entry if one does not yet exist:
+        state_dict = self.get_context_state(context)
+
+        # Advance state bookmark values if applicable
+        if latest_record and self.replication_method == 'INCREMENTAL':
+            if not self.replication_key:
+                msg = (
+                    f"Could not detect replication key for '{self.name}' "
+                    f"stream(replication method={self.replication_method})"
+                )
+                raise ValueError(msg)
+            treat_as_sorted = self.is_sorted
+            if not treat_as_sorted and self.state_partitioning_keys is not None:
+                # Streams with custom state partitioning are not resumable.
+                treat_as_sorted = False
+
+
+            flattened_latest_record = self._flatten_record(latest_record)
+            increment_state(
+                state_dict,
+                replication_key=self.replication_key,
+                latest_record=flattened_latest_record,
+                is_sorted=treat_as_sorted,
+                check_sorted=self.check_sorted,
+            )
+
 class GeotargetsStream(ReportsStream):
     """Geotargets, worldwide, constant across all customers"""
 
-    gaql = """
-    SELECT 
-        geo_target_constant.canonical_name,
-        geo_target_constant.country_code,
-        geo_target_constant.id,
-        geo_target_constant.name,
-        geo_target_constant.status,
+    def gaql(self, context=None):
+        return """
+        SELECT 
+            geo_target_constant.canonical_name,
+            geo_target_constant.country_code,
+            geo_target_constant.id,
+            geo_target_constant.name,
+            geo_target_constant.status,
         geo_target_constant.target_type
     FROM geo_target_constant
     """
@@ -197,8 +240,8 @@ class GeotargetsStream(ReportsStream):
 class ClickViewReportStream(ReportsStream):
     date: datetime.date
 
-    @property
-    def gaql(self):
+
+    def gaql(self, context=None):
         return f"""
         SELECT
             click_view.gclid
@@ -294,8 +337,8 @@ class ClickViewReportStream(ReportsStream):
 class CampaignsStream(ReportsStream):
     """Define custom stream."""
 
-    @property
-    def gaql(self):
+
+    def gaql(self, context=None):
         return """
         SELECT campaign.id, campaign.name FROM campaign ORDER BY campaign.id
         """
@@ -310,8 +353,8 @@ class CampaignsStream(ReportsStream):
 class AdGroupsStream(ReportsStream):
     """Define custom stream."""
 
-    @property
-    def gaql(self):
+
+    def gaql(self, context=None):
         return """
        SELECT ad_group.url_custom_parameters, 
        ad_group.type, 
@@ -352,29 +395,30 @@ class AdGroupsStream(ReportsStream):
 class AdGroupsPerformance(ReportsStream):
     """AdGroups Performance"""
 
-    @property
-    def gaql(self):
+
+    def gaql(self, context=None):
         return f"""
         SELECT campaign.id, ad_group.id, metrics.impressions, metrics.clicks,
-               metrics.cost_micros
+               metrics.cost_micros,
+               segments.date
                FROM ad_group
-               WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+               WHERE segments.date >= {self.start_date(context)} and segments.date <= {self.end_date}
         """
 
     records_jsonpath = "$.results[*]"
     name = "stream_adgroupsperformance"
     primary_keys = ["campaign__id", "adGroup__id"]
-    replication_key = None
+    replication_key = "segments__date"
     schema_filepath = SCHEMAS_DIR / "adgroups_performance.json"
 
 
 class CampaignPerformance(ReportsStream):
     """Campaign Performance"""
 
-    @property
-    def gaql(self):
+
+    def gaql(self, context=None):
         return f"""
-    SELECT campaign.name, campaign.status, segments.device, segments.date, metrics.impressions, metrics.clicks, metrics.ctr, metrics.average_cpc, metrics.cost_micros FROM campaign WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+    SELECT campaign.name, campaign.status, segments.device, segments.date, metrics.impressions, metrics.clicks, metrics.ctr, metrics.average_cpc, metrics.cost_micros FROM campaign WHERE segments.date >= {self.start_date(context)} and segments.date <= {self.end_date}
     """
 
     records_jsonpath = "$.results[*]"
@@ -385,17 +429,17 @@ class CampaignPerformance(ReportsStream):
         "segments__date",
         "segments__device",
     ]
-    replication_key = None
+    replication_key = "segments__date"
     schema_filepath = SCHEMAS_DIR / "campaign_performance.json"
 
 
 class CampaignPerformanceByAgeRangeAndDevice(ReportsStream):
     """Campaign Performance By Age Range and Device"""
 
-    @property
-    def gaql(self):
+
+    def gaql(self, context=None):
         return f"""
-    SELECT ad_group_criterion.age_range.type, campaign.name, campaign.status, ad_group.name, segments.date, segments.device, ad_group_criterion.system_serving_status, ad_group_criterion.bid_modifier, metrics.clicks, metrics.impressions, metrics.ctr, metrics.average_cpc, metrics.cost_micros, campaign.advertising_channel_type FROM age_range_view WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+    SELECT ad_group_criterion.age_range.type, campaign.name, campaign.status, ad_group.name, segments.date, segments.device, ad_group_criterion.system_serving_status, ad_group_criterion.bid_modifier, metrics.clicks, metrics.impressions, metrics.ctr, metrics.average_cpc, metrics.cost_micros, campaign.advertising_channel_type FROM age_range_view WHERE segments.date >= {self.start_date(context)} and segments.date <= {self.end_date}
     """
 
     records_jsonpath = "$.results[*]"
@@ -408,17 +452,17 @@ class CampaignPerformanceByAgeRangeAndDevice(ReportsStream):
         "campaign__status",
         "segments__device",
     ]
-    replication_key = None
+    replication_key = "segments__date"
     schema_filepath = SCHEMAS_DIR / "campaign_performance_by_age_range_and_device.json"
 
 
 class CampaignPerformanceByGenderAndDevice(ReportsStream):
     """Campaign Performance By Age Range and Device"""
 
-    @property
-    def gaql(self):
+
+    def gaql(self, context=None):
         return f"""
-    SELECT ad_group_criterion.gender.type, campaign.name, campaign.status, ad_group.name, segments.date, segments.device, ad_group_criterion.system_serving_status, ad_group_criterion.bid_modifier, metrics.clicks, metrics.impressions, metrics.ctr, metrics.average_cpc, metrics.cost_micros, campaign.advertising_channel_type FROM gender_view WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date}
+    SELECT ad_group_criterion.gender.type, campaign.name, campaign.status, ad_group.name, segments.date, segments.device, ad_group_criterion.system_serving_status, ad_group_criterion.bid_modifier, metrics.clicks, metrics.impressions, metrics.ctr, metrics.average_cpc, metrics.cost_micros, campaign.advertising_channel_type FROM gender_view WHERE segments.date >= {self.start_date(context)} and segments.date <= {self.end_date}
     """
 
     records_jsonpath = "$.results[*]"
@@ -431,17 +475,17 @@ class CampaignPerformanceByGenderAndDevice(ReportsStream):
         "campaign__status",
         "segments__device",
     ]
-    replication_key = None
+    replication_key = "segments__date"
     schema_filepath = SCHEMAS_DIR / "campaign_performance_by_gender_and_device.json"
 
 
 class CampaignPerformanceByLocation(ReportsStream):
     """Campaign Performance By Age Range and Device"""
 
-    @property
-    def gaql(self):
+
+    def gaql(self, context=None):
         return f"""
-    SELECT campaign_criterion.location.geo_target_constant, campaign.name, campaign_criterion.bid_modifier, segments.date, metrics.clicks, metrics.impressions, metrics.ctr, metrics.average_cpc, metrics.cost_micros FROM location_view WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date} AND campaign_criterion.status != 'REMOVED'
+    SELECT campaign_criterion.location.geo_target_constant, campaign.name, campaign_criterion.bid_modifier, segments.date, metrics.clicks, metrics.impressions, metrics.ctr, metrics.average_cpc, metrics.cost_micros FROM location_view WHERE segments.date >= {self.start_date(context)} and segments.date <= {self.end_date} AND campaign_criterion.status != 'REMOVED'
     """
 
     records_jsonpath = "$.results[*]"
@@ -451,15 +495,15 @@ class CampaignPerformanceByLocation(ReportsStream):
         "campaign__name",
         "segments__date",
     ]
-    replication_key = None
+    replication_key = "segments__date"
     schema_filepath = SCHEMAS_DIR / "campaign_performance_by_location.json"
 
 
 class GeoPerformance(ReportsStream):
     """Geo performance"""
 
-    @property
-    def gaql(self):
+
+    def gaql(self, context=None):
         return f"""
     SELECT 
         campaign.name, 
@@ -472,7 +516,7 @@ class GeoPerformance(ReportsStream):
         geographic_view.location_type,
         geographic_view.country_criterion_id
     FROM geographic_view 
-    WHERE segments.date >= {self.start_date} and segments.date <= {self.end_date} 
+    WHERE segments.date >= {self.start_date(context)} and segments.date <= {self.end_date} 
     """
 
     records_jsonpath = "$.results[*]"
@@ -485,5 +529,5 @@ class GeoPerformance(ReportsStream):
         "campaign__status",
         "segments__date"
     ]
-    replication_key = None
+    replication_key = "segments__date"
     schema_filepath = SCHEMAS_DIR / "geo_performance.json"
