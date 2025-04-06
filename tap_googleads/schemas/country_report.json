@@ -7,6 +7,9 @@
       "campaign__id": {
           "type": ["string", "null"]
       },
+      "adGroup__id": {
+          "type": ["string", "null"]
+      },
       "geographicView__countryCriterionId": {
           "type": ["string", "null"]
       },
