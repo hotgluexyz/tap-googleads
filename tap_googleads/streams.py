@@ -376,7 +376,7 @@ class AdPerformanceReportConversionStats(ReportsStream):
         "segments__conversion_action_name",
         "segments__device"
     ]
-    replication_key = "segments__date"
+
     schema_filepath = SCHEMAS_DIR / "ad_performance_report_conversion_stats.json"
 
 class CampaignsStream(ReportsStream):
@@ -455,7 +455,7 @@ class CampaignReportsStream(ReportsStream):
     records_jsonpath = "$.results[*]"
     name = "stream_campaign_report"
     primary_keys = ["campaign__id", "segments__date", "customer__id"]
-    replication_key = "segments__date"
+    
     schema_filepath = SCHEMAS_DIR / "campaign_report.json"
 
 class CampaignReportCustomConversionsStream(ReportsStream):
@@ -482,7 +482,7 @@ class CampaignReportCustomConversionsStream(ReportsStream):
     records_jsonpath = "$.results[*]"
     name = "stream_campaign_report_custom_conversions"
     primary_keys = ["customer__id", "campaign__id", "segments__conversionActionName", "segments__date"]
-    replication_key = "segments__date"
+    
     schema_filepath = SCHEMAS_DIR / "campaign_report_custom_conversions.json"
 
 class CityReportStream(ReportsStream):
@@ -513,7 +513,7 @@ class CityReportStream(ReportsStream):
     records_jsonpath = "$.results[*]"
     name = "stream_city_report"
     primary_keys = ["customer__id", "campaign__id", "adGroup__id", "segments__date", "segments__geoTargetCity", "geographicView__locationType"]
-    replication_key = "segments__date"
+
     schema_filepath = SCHEMAS_DIR / "city_report.json"
 
 class CityReportCustomConversionsStream(ReportsStream):
@@ -1320,7 +1320,6 @@ class KeywordReportCustomConversionsStream(ReportsStream):
     records_jsonpath = "$.results[*]"
     name = "stream_keyword_report_custom_conversions"
     primary_keys = ["customer__id", "adGroup__id", "adGroupCriterion__criterionId", "campaign__id", "segments__conversionActionName", "segments__date"]
-    replication_key = "segments__date"
     schema_filepath = SCHEMAS_DIR / "keyword_report_custom_conversions.json"
 
 
@@ -1410,7 +1409,6 @@ class AdReportStream(ReportsStream):
     records_jsonpath = "$.results[*]"
     name = "stream_ad_report"
     primary_keys = ["customer__id", "adGroupAd__ad__id", "adGroup__id", "segments__date"]
-    replication_key = "segments__date"
     schema_filepath = SCHEMAS_DIR / "ad_report.json"
 
 class AdStatsStream(ReportsStream):
@@ -1539,7 +1537,7 @@ class AgeReportStream(ReportsStream):
     records_jsonpath = "$.results[*]"
     name = "stream_age_report"
     primary_keys = ["customer__id", "adGroup__id", "adGroupCriterion__ageRange__type", "campaign__id", "segments__date", "adGroupCriterion__criterionId"]
-    replication_key = None
+
     schema_filepath = SCHEMAS_DIR / "age_report.json"
 
 class AgeReportCustomConversionsStream(ReportsStream):
@@ -1568,7 +1566,7 @@ class AgeReportCustomConversionsStream(ReportsStream):
     records_jsonpath = "$.results[*]"
     name = "stream_age_report_custom_conversions"
     primary_keys = ["customer__id", "adGroup__id", "adGroupCriterion__ageRange__type", "campaign__id", "segments__date", "adGroupCriterion__criterionId", "segments__conversionActionName"]
-    replication_key = None
+    
     schema_filepath = SCHEMAS_DIR / "age_report_custom_conversions.json"
         
 class CampaignPerformance(ReportsStream):
