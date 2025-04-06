@@ -31,10 +31,7 @@
       "segments__keyword__adGroupCriterion": {
         "type": ["string", "null"]
       },
-      "segments__keyword__info__matchType": {
-        "type": ["string", "null"]
-      },
-      "segments__keyword__info__text": {
+      "segments__keyword__info": {
         "type": ["string", "null"]
       },
       "segments__searchTermMatchType": {

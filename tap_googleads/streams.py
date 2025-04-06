@@ -556,6 +556,7 @@ class CountryReportStream(ReportsStream):
             select
                 customer.id,
                 campaign.id,
+                ad_group.id,
                 geographic_view.country_criterion_id,
                 geographic_view.location_type,
                 metrics.clicks,
@@ -571,8 +572,10 @@ class CountryReportStream(ReportsStream):
 
     records_jsonpath = "$.results[*]"
     name = "stream_country_report"
-    primary_keys = ["customer__id", "campaign__id", "geographicView__countryCriterionId", "segments__date", "geographicView__locationType"]
+
+    primary_keys = ["customer__id", "campaign__id", "adGroup__id", "geographicView__countryCriterionId", "segments__date", "geographicView__locationType"]
     replication_key = "segments__date"
+
     schema_filepath = SCHEMAS_DIR / "country_report.json"
 
 class CountryReportCustomConversionsStream(ReportsStream):
@@ -584,6 +587,7 @@ class CountryReportCustomConversionsStream(ReportsStream):
             select
                 customer.id,
                 campaign.id,
+                ad_group.id,
                 geographic_view.country_criterion_id,
                 geographic_view.location_type,
                 metrics.all_conversions,
@@ -599,8 +603,10 @@ class CountryReportCustomConversionsStream(ReportsStream):
 
     records_jsonpath = "$.results[*]"
     name = "stream_country_report_custom_conversions"
-    primary_keys = ["customer__id", "campaign__id", "geographicView__countryCriterionId", "segments__conversionActionName", "segments__date", "geographicView__locationType"]
+
+    primary_keys = ["customer__id", "campaign__id", "adGroup__id", "geographicView__countryCriterionId", "segments__conversionActionName", "segments__date", "geographicView__locationType"]
     replication_key = "segments__date"
+
     schema_filepath = SCHEMAS_DIR / "country_report_custom_conversions.json"
 
 class DemoDeviceStream(ReportsStream):
@@ -1112,8 +1118,9 @@ class SearchQueryReportStream(ReportsStream):
 
     records_jsonpath = "$.results[*]"
     name = "stream_search_query_report"
-    primary_keys = ["customer__id", "campaign__id", "adGroup__id", "searchTermView__searchTerm", "segments__date", "segments__keyword__adGroupCriterion", "segments__keyword__info__matchType", "segments__keyword__info__text", "segments__searchTermMatchType"]
-    
+
+    primary_keys = ["customer__id", "campaign__id", "adGroup__id", "searchTermView__searchTerm", "segments__date", "segments__keyword__adGroupCriterion", "segments__keyword__info", "segments__searchTermMatchType"]
+
     schema_filepath = SCHEMAS_DIR / "search_query_report.json"
 
 class SearchQueryReportCustomConversionsStream(ReportsStream):
