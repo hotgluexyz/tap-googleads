@@ -9,7 +9,6 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, Iterable
 
 from singer_sdk import typing as th  # JSON Schema typing helpers
-from singer_sdk.helpers._state import increment_state
 from tap_googleads.client import GoogleAdsStream, ResumableAPIError, _sanitise_customer_id
 from pendulum import parse
 
