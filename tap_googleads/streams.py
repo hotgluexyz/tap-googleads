@@ -162,46 +162,11 @@ class ReportsStream(GoogleAdsStream):
                 record["customer_id"] = customer_id
                 yield record
 
-    def _flatten_record(self, record, parent_prefix=""):
-        flattened_record = {}
-        for key, value in record.items():
-            if isinstance(value, dict):
-                flattened_record.update(self._flatten_record(value, parent_prefix=f"{parent_prefix}{key}__"))
-            else:
-                flattened_record[f"{parent_prefix}{key}"] = value
-        return flattened_record
-
-    def _increment_stream_state(
-        self,
-        latest_record: dict[str, t.Any],
-        *,
-        context: dict | None = None,
-    ) -> None:
-        # This also creates a state entry if one does not yet exist:
-        state_dict = self.get_context_state(context)
-
-        # Advance state bookmark values if applicable
-        if latest_record and self.replication_method == 'INCREMENTAL':
-            if not self.replication_key:
-                msg = (
-                    f"Could not detect replication key for '{self.name}' "
-                    f"stream(replication method={self.replication_method})"
-                )
-                raise ValueError(msg)
-            treat_as_sorted = self.is_sorted
-            if not treat_as_sorted and self.state_partitioning_keys is not None:
-                # Streams with custom state partitioning are not resumable.
-                treat_as_sorted = False
-
-
-            flattened_latest_record = self._flatten_record(latest_record)
-            increment_state(
-                state_dict,
-                replication_key=self.replication_key,
-                latest_record=flattened_latest_record,
-                is_sorted=treat_as_sorted,
-                check_sorted=self.check_sorted,
-            )
+    def post_process(self, row, context):
+        row = super().post_process(row, context)
+        if self.replication_key == "segments__date":
+            row["segments__date"] = row["segments"].pop("date")
+        return row
 
 class GeotargetsStream(ReportsStream):
     """Geotargets, worldwide, constant across all customers"""
