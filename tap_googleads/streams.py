@@ -51,6 +51,11 @@ class AccessibleCustomers(GoogleAdsStream):
             customer_id = customer.split("/")[1]
             customer_ids.append(customer_id.replace("-", ""))
 
+        # Always try to spawn child streams for customer ids in config
+        # If those configured ids are invalid, the child streams will fail
+        if self.customer_ids:
+            customer_ids = list(set(customer_ids).union(self.customer_ids))
+
         return {"customer_ids": customer_ids}
 
 
@@ -103,12 +108,6 @@ class CustomerHierarchyStream(GoogleAdsStream):
 
     seen_customer_ids = set()
 
-    def validate_response(self, response):
-        if response.status_code == HTTPStatus.FORBIDDEN:
-            msg = self.response_error_message(response)
-            raise ResumableAPIError(msg, response)
-
-        super().validate_response(response)
 
 
     def get_records(self, context):
@@ -117,6 +116,8 @@ class CustomerHierarchyStream(GoogleAdsStream):
                 context["customer_id"] = customer_id
                 yield from super().get_records(context)
             except Exception as e:
+                if customer_id in self.customer_ids:
+                    raise e
                 self.logger.error(f"Error processing resource name {customer_id}: {str(e)}")
                 continue
 
