@@ -156,6 +156,8 @@ class GoogleAdsStream(RESTStream):
 
     def start_date(self, context=None):
         start_value = self.get_starting_replication_key_value(context)
+        if not start_value:
+            start_value = self.config.get("start_date") 
         start_date =  f"'{parse(start_value).date()}'"
         return start_date
 

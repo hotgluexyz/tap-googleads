@@ -273,9 +273,7 @@ class ClickViewReportStream(ReportsStream):
         return params
 
     def request_records(self, context):
-        start_value = self.get_starting_replication_key_value(context)
-
-        start_date =  parse(start_value).date()
+        start_date =  self.start_date
         end_date = parse(self.config["end_date"]).date()
 
         delta = end_date - start_date
