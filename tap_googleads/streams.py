@@ -372,7 +372,7 @@ class AdGroupsPerformance(ReportsStream):
 
     records_jsonpath = "$.results[*]"
     name = "stream_adgroupsperformance"
-    primary_keys = ["campaign__id", "adGroup__id"]
+    primary_keys = ["campaign__id", "adGroup__id", "segments__date"]
     
     schema_filepath = SCHEMAS_DIR / "adgroups_performance.json"
 
