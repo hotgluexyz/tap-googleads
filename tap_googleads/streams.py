@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, Iterable
 
 from singer_sdk import typing as th  # JSON Schema typing helpers
+from singer_sdk.exceptions import ConfigValidationError
 from tap_googleads.client import GoogleAdsStream, ResumableAPIError, _sanitise_customer_id
 from pendulum import parse
 
@@ -138,7 +139,10 @@ class CustomerHierarchyStream(GoogleAdsStream):
 
     def get_child_context(self, record: Record, context):
         customer_id = record.get("customer_id")
-        is_active_client = record.get("manager") == False and record.get("status") == "ENABLED"
+        #test accounts are always CLOSED; skip ENABLED gate when is_test_account
+        is_active_client = record.get("manager") == False and (
+            self.config.get("is_test_account") or record.get("status") == "ENABLED"
+        )
         already_synced = customer_id in self.seen_customer_ids
 
         family_line = self.get_customer_family_line(record.get("resourceName"))
@@ -270,11 +274,22 @@ class ClickViewReportStream(ReportsStream):
         params: dict = {}
         if next_page_token:
             params["pageToken"] = next_page_token
+        params["query"] = self.gaql(context)
         return params
 
     def request_records(self, context):
-        start_date =  self.start_date
+        # self.start_date is the GAQL helper (returns "'YYYY-MM-DD'").
+        start_date = parse(self.start_date(context).strip("'")).date()
         end_date = parse(self.config["end_date"]).date()
+        # click_view only allows the last 90 days
+        earliest = datetime.date.today() - datetime.timedelta(days=90)
+        if start_date < earliest:
+            start_date = earliest
+        if end_date < start_date:
+            raise ConfigValidationError(
+                f"end_date ({end_date}) must be on or after click_view start "
+                f"({start_date}). click_view only supports the last 90 days."
+            )
 
         delta = end_date - start_date
         dates = (start_date + datetime.timedelta(days=i) for i in range(delta.days))
@@ -283,7 +298,7 @@ class ClickViewReportStream(ReportsStream):
             records = list(super().request_records(context))
 
             if not records:
-                self._increment_stream_state({"date": self.date.isoformat()}, context=self.context)
+                self._increment_stream_state({"date": self.date.isoformat()}, context=context)
 
             yield from records
 
