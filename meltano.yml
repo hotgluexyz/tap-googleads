@@ -40,6 +40,8 @@ plugins:
       kind: date_iso8601
     - name: enable_click_view_report_stream
       kind: boolean
+    - name: is_test_account
+      kind: boolean
   loaders:
   - name: target-jsonl
     variant: andyh1203

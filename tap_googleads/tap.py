@@ -112,6 +112,12 @@ class TapGoogleAds(Tap):
             description="Enables the tap's ClickViewReportStream. This requires setting up / permission on your google ads account(s)",
             default=False,
         ),
+        th.Property(
+            "is_test_account",
+            th.BooleanType,
+            description="When true, syncs CLOSED customer clients (Google Ads test accounts are always CLOSED).",
+            default=False,
+        ),
     ).to_dict()
 
     def setup_mapper(self):

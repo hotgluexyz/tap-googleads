@@ -260,32 +260,16 @@ class ClickViewReportStream(ReportsStream):
 
         return row
 
-    def get_url_params(self, context, next_page_token):
-        """Return a dictionary of values to be used in URL parameterization.
-
-        Args:
-            context: The stream context.
-            next_page_token: The next page index or value.
-
-        Returns:
-            A dictionary of URL query parameters.
-
-        """
-        params: dict = {}
-        if next_page_token:
-            params["pageToken"] = next_page_token
-        params["query"] = self.gaql(context)
-        return params
 
     def request_records(self, context):
         # self.start_date is the GAQL helper (returns "'YYYY-MM-DD'").
         start_date = parse(self.start_date(context).strip("'")).date()
         end_date = parse(self.config["end_date"]).date()
         # click_view only allows the last 90 days
-        earliest = datetime.date.today() - datetime.timedelta(days=90)
+        earliest = datetime.datetime.now(datetime.timezone.utc).date() - datetime.timedelta(days=90)
         if start_date < earliest:
             start_date = earliest
-        if end_date < start_date:
+        if end_date <= start_date:
             raise ConfigValidationError(
                 f"end_date ({end_date}) must be on or after click_view start "
                 f"({start_date}). click_view only supports the last 90 days."
