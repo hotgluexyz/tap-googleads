@@ -25,6 +25,18 @@
         "metrics__impressions": {
             "type": ["string", "null"]
         },
+        "metrics__conversions": {
+            "type": ["number", "null"]
+        },
+        "metrics__conversionsValue": {
+            "type": ["number", "null"]
+        },
+        "metrics__allConversions": {
+            "type": ["number", "null"]
+        },
+        "metrics__allConversionsValue": {
+            "type": ["number", "null"]
+        },
         "segments__date": {
             "type": ["string", "null"],
             "format": "date"

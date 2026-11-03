@@ -364,6 +364,8 @@ class AdGroupsPerformance(ReportsStream):
         return f"""
         SELECT campaign.id, ad_group.id, metrics.impressions, metrics.clicks,
                metrics.cost_micros,
+               metrics.conversions, metrics.conversions_value,
+               metrics.all_conversions, metrics.all_conversions_value,
                segments.date
                FROM ad_group
                WHERE segments.date >= {self.start_date(context)} and segments.date <= {self.end_date}
@@ -382,7 +384,12 @@ class CampaignPerformance(ReportsStream):
 
     def gaql(self, context=None):
         return f"""
-    SELECT campaign.name, campaign.status, segments.device, segments.date, metrics.impressions, metrics.clicks, metrics.ctr, metrics.average_cpc, metrics.cost_micros FROM campaign WHERE segments.date >= {self.start_date(context)} and segments.date <= {self.end_date}
+    SELECT campaign.name, campaign.status, segments.device, segments.date,
+           metrics.impressions, metrics.clicks, metrics.ctr, metrics.average_cpc,
+           metrics.cost_micros, metrics.conversions, metrics.conversions_value,
+           metrics.all_conversions, metrics.all_conversions_value
+    FROM campaign
+    WHERE segments.date >= {self.start_date(context)} and segments.date <= {self.end_date}
     """
 
     records_jsonpath = "$.results[*]"
